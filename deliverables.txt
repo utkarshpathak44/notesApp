@@ -1,0 +1,16 @@
+custom theming in tailwind
+react toastify
+loading state
+error handling
+url driven
+axios
+
+stack:
+react
+axios
+tailwind
+
+
+
+problems:
+font import not working
