@@ -1,15 +1,25 @@
 import { useState } from "react";
+import Recents from "./sidebarComponents/Recents"
+import Folders from "./sidebarComponents/Folders";
+import More from "./sidebarComponents/More";
+
 const recents = [
   "Reflection of the month of june",
   "Project proposal",
   "travel hehe",
 ];
-const activeDocument = "Reflection of the month of june";
-const activeFolder = "Personal";
+const activeFolderInit = "Personal";
 const folders = ["Personal", "Work", "Finances", "Travel", "Events"];
-const frequents = ["Favourites", "Trash", "Archived"];
+const frequentsInit = ["Favourites", "Trash", "Archived"];
 
 const SideBar = () => {
+  const [recentFiles,setRecentFiles]=useState(recents);
+  const [allFolders,setAllFolders]=useState(folders)
+  const [currentFile,setCurrentFile] =useState("Reflection of the month of june");
+  const [activeFolder,setActiveFolder]=useState(activeFolderInit)
+  const [frequents,setFrequents]=useState(frequentsInit)
+  const [currentFrequent,setCurrentFrequent]=useState("Favourites")
+
   const [search, setSearch] = useState(false);
 
   return (
@@ -17,11 +27,19 @@ const SideBar = () => {
       <div className="flex flex-col gap-4  p-5">
         <div className="flex flex-row  justify-between h-10">
           <img src="./src/assets/logo.svg" alt="notwed" />
-          <img src="./src/assets/search.svg" alt="search" width={20} />
+          <img
+            src={`./src/assets/${!search ? "search" : "close"}.svg`}
+            alt="search"
+            width={20}
+            onClick={() => setSearch((p) => !p)}
+            className={` ${search ? "duration-300" : ""} ease-in-out ${search ? "rotate-90" : "rotate-0"}`}          />
         </div>
         <div className="flex flex-row ">
           {search ? (
-            <input type="text" />
+            <div className="flex flex-row w-full items-center bg-[#242424] px-2 gap-2 py-2">
+              <img src="./src/assets/search.svg" alt="" />
+              <input type="text"  placeholder="Search note" className="border-none focus:ring-0 outline-none w-full"/>
+            </div>
           ) : (
             <button className="flex flex-row w-full items-center bg-[#242424] justify-center py-2">
               <img src="./src/assets/add.svg" alt="" />
@@ -30,65 +48,9 @@ const SideBar = () => {
           )}
         </div>
       </div>
-      <div className="flex flex-col gap-2">
-        <div className="px-5 text-[#999999]">Recents</div>
-        <div>
-          {recents.map((data, index) => {
-            return (
-              <div
-                className={`w-full p-2 px-4 flex flex-row gap-2 items-center ${
-                  activeDocument === data ? "bg-amber-800" : ""
-                }`}
-                key={index}
-              >
-                <img src={`./src/assets/${!(activeDocument===data)?"noteDarker":"note"}.svg`} alt="" />
-                <div className={!(activeDocument===data)?"text-[#999999]":"text-white font-semibold"}>{data}</div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-row w-full px-5 justify-between">
-          <div className="text-[#999999]">Folders</div>
-          <img src="./src/assets/addFolder.svg" alt="" />
-        </div>
-        <div>
-          {folders.map((data, index) => {
-            return (
-              <div
-                className={`w-full p-2 px-4 flex flex-row gap-2 ${
-                  activeFolder === data ? "bg-[#232323]" : ""
-                }`}
-                key={index}
-              >
-                <img src={`./src/assets/${(activeFolder===data)?"currentFolder":"otherFolder"}.svg`} alt="" />
-                <div className={!(activeFolder===data)?"text-[#999999]":"text-white font-semibold"}>{data}</div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-2 text-[#999999]">
-        <div className="flex flex-row w-full px-5 justify-between">
-          <div>More</div>
-          <img src="./src/assets/addFolder.svg" alt="" />
-        </div>
-        <div>
-          {frequents.map((data, index) => {
-            return (
-              <div
-                className="w-full p-2 px-4   flex flex-row gap-2"
-                key={index}
-              >
-                <img src={`./src/assets/${data}.svg`} alt="" />
-                <div className="font-sans">{data}</div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+          <Recents recentFiles={recentFiles} currentFile={currentFile} setCurrentFile={setCurrentFile}/>
+          <Folders allFolders={allFolders} currentFolder={activeFolder} setCurrentFolder={setActiveFolder}/>
+          <More frequents={frequents} currentFrequent={currentFrequent} setCurrentFrequent={setCurrentFrequent}/>
     </div>
   );
 };

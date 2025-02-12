@@ -1,5 +1,6 @@
 import { useState } from "react";
 import CustomTextArea from "./CustomTextArea";
+import { ToastContainer, toast } from "react-toastify";
 
 const data = `
 Lorem ipsum dolor sit amet consectetur. Explicabo ad rerum consequatur
@@ -38,8 +39,13 @@ const NoteView = () => {
   const [title, setTitle] = useState("a random note");
   const [textData, setTextData] = useState(data);
 
+  const setAndNotifyData = (someData: string) => {
+    setTextData(someData);
+    toast("file saved");
+  };
+
   return (
-    <div className="flex flex-col bg-[#181818] w-full h-full p-10 py-15 gap-8">
+    <div className="flex flex-col bg-[#181818] w-full h-full p-10 py-15 gap-8 ">
       <div className="w-full flex flex-row  justify-between text-4xl ">
         <div>{title}</div>
         <div className=" flex border border-stone-400 rounded-4xl w-10 h-10 items-center justify-center gap-1">
@@ -65,7 +71,22 @@ const NoteView = () => {
           <div className="ml-10">Personal</div>
         </div>
       </div>
-      <CustomTextArea text={textData} handleText={setTextData} />
+      <CustomTextArea text={textData} setAndNotifyData={setAndNotifyData} />
+      <ToastContainer
+        position="bottom-left"
+        hideProgressBar={true}
+        theme="dark"
+      />
+      <div className="flex flex-row  w-80 gap-2">
+        <div className="flex border-t-2 border-l-2 border-r-2 border-b-4 border-[#555555]  text-[#555555] font-bold w-12 rounded-xl items-center justify-center">
+          Ctrl
+        </div>
+        <div className="text-[#555555] font-bold">+</div>
+        <div className="flex border-t-2 border-l-2 border-r-2 border-b-4 border-[#555555]  text-[#555555] font-bold w-9 rounded-xl items-center justify-center">
+          S
+        </div>
+        <div className="text-[#555555] font-bold">to save the document</div>
+      </div>
     </div>
   );
 };

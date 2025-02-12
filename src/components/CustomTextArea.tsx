@@ -1,19 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 interface CustomTextAreaProps {
   text: string;
-  handleText: (value: string) => void;
+  setAndNotifyData: (value: string) => void;
 }
 
 const CustomTextArea: React.FC<CustomTextAreaProps> = ({
   text,
-  handleText,
+  setAndNotifyData,
 }) => {
   const [textData, setTextData] = useState<string>(text);
 
   const handleTextWrapper = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextData(e.target.value);
-    handleText(e.target.value);
   };
+
+  useEffect(() => {
+    const handleSaveShortcut = (event:any) => {
+      if (event.ctrlKey && event.key === "s") {
+        event.preventDefault();
+        setAndNotifyData(textData);
+    }
+    };
+
+    document.addEventListener("keydown", handleSaveShortcut);
+
+    return () => {
+      document.removeEventListener("keydown", handleSaveShortcut);
+    };
+  }, []);
+
+
+
   return (
     <textarea
       name=""
@@ -25,3 +42,4 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
   );
 };
 export default CustomTextArea;
+
