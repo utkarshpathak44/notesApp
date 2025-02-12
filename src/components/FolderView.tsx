@@ -57,9 +57,9 @@ const FolderView = () => {
   ];
 
   return (
-    <div className="flex flex-col bg-[#1c1c1c] w-150 gap-8 p-4 py-15">
-      <h2 className="text-2xl">Personal </h2>
-      <div className="flex flex-col gap-4">
+    <div className="flex flex-col bg-[#1c1c1c] w-150 gap-8 py-15 ">
+      <h2 className="text-2xl px-4">Personal </h2>
+      <div className="flex flex-col gap-4 overflow-y-scroll px-4">
         {notes.map((data, index) => {
           return (
             <div
