@@ -5,52 +5,52 @@ const FolderView = () => {
 
   const notes = [
     {
-      filename: "file_1.txt",
+      filename: "story_intro.txt",
       utcDate: new Date().toISOString(),
       snippet: "Once upon a time in a",
     },
     {
-      filename: "file_2.txt",
+      filename: "quick_fox.txt",
       utcDate: new Date().toISOString(),
       snippet: "The quick brown fox jumps",
     },
     {
-      filename: "file_3.txt",
+      filename: "javascript_guide.txt",
       utcDate: new Date().toISOString(),
       snippet: "JavaScript is a versatile programming",
     },
     {
-      filename: "file_4.txt",
+      filename: "genesis_start.txt",
       utcDate: new Date().toISOString(),
       snippet: "In the beginning, there was",
     },
     {
-      filename: "file_5.txt",
+      filename: "mystery_novel.txt",
       utcDate: new Date().toISOString(),
       snippet: "She opened the book and",
     },
     {
-      filename: "file_6.txt",
+      filename: "tech_evolution.txt",
       utcDate: new Date().toISOString(),
       snippet: "Technology evolves at a rapid",
     },
     {
-      filename: "file_7.txt",
+      filename: "ocean_waves.txt",
       utcDate: new Date().toISOString(),
       snippet: "The sound of the ocean",
     },
     {
-      filename: "file_8.txt",
+      filename: "journey_begins.txt",
       utcDate: new Date().toISOString(),
       snippet: "A journey of a thousand",
     },
     {
-      filename: "file_9.txt",
+      filename: "sunset_glow.txt",
       utcDate: new Date().toISOString(),
       snippet: "As the sun set behind",
     },
     {
-      filename: "file_10.txt",
+      filename: "power_responsibility.txt",
       utcDate: new Date().toISOString(),
       snippet: "With great power comes great",
     },
@@ -73,7 +73,9 @@ const FolderView = () => {
                 <div className="text-[#666666]">
                   {new Date(data.utcDate).toLocaleDateString("en-GB")}
                 </div>
-                <div className="text-[#999999]">{data.snippet.slice(0,28) + " "}...</div>
+                <div className="text-[#999999]">
+                  {data.snippet.slice(0, 28) + " "}...
+                </div>
               </div>
             </div>
           );

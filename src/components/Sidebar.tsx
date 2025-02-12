@@ -41,7 +41,7 @@ const SideBar = () => {
               <input type="text"  placeholder="Search note" className="border-none focus:ring-0 outline-none w-full"/>
             </div>
           ) : (
-            <button className="flex flex-row w-full items-center bg-[#242424] justify-center py-2">
+            <button className="flex flex-row w-full items-center bg-[#242424] justify-center py-2 gap-1 hover:bg-[#292929]">
               <img src="./src/assets/add.svg" alt="" />
               <div>New Note</div>
             </button>

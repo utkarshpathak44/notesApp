@@ -17,7 +17,11 @@ const More=({frequents,currentFrequent,setCurrentFrequent})=>{
                 onClick={() => setFrequent(index)}
               >
                 <img src={`./src/assets/${data}.svg`} alt="" />
-                <div className="font-sans">{data}</div>
+                <div className={
+                  !(currentFrequent === data)
+                    ? "text-[#999999]"
+                    : "text-white font-semibold"
+                }>{data}</div>
               </div>
             );
           })}
