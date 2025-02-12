@@ -1,15 +1,17 @@
 import SideBar from "./components/SideBar";
 import FolderView from "./components/FolderView";
 import NoteView from "./components/NoteView";
+import { ToastProvider } from "./contexts/CustomToast";
 
 function App() {
   return (
-
-    <div className="flex flex-row w-screen h-screen text-white font-sans">
-      <SideBar />
-      <FolderView/>
-      <NoteView/>
-    </div>
+    <ToastProvider>
+      <div className="flex flex-row w-screen h-screen text-white font-sans">
+        <SideBar />
+        <FolderView />
+        <NoteView />
+      </div>
+    </ToastProvider>
   );
 }
 
