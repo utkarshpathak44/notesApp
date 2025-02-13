@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
-export const useNetwork = (url: string, method: string, data: typeof Object) => {
+export const useNetwork = () => {
   const [state, setState] = useState<{
     data?: any;
     loading: boolean;
@@ -12,41 +12,24 @@ export const useNetwork = (url: string, method: string, data: typeof Object) => 
     error: null,
   });
 
-  useEffect(() => {
-    let isMounted = true;
+  const fetchData = async (url: string, method: string, data: any) => {
+    setState({ data: null, loading: true, error: null });
 
-    setState((prev) => ({ ...prev, loading: true, error: null }));
+    try {
+      const config = {
+        method,
+        url,
+        data,
+      };
 
-    const fetchData = async () => {
-      try {
-        const config = {
-          method,
-          url,
-          data,
-        };
+      const response = await axios(config);
+      setState({ data: response.data, loading: false, error: null });
+      console.log(response.data);
+    } catch (error) {
+      console.error("Axios error:", error);
+      setState({ data: null, loading: false, error });
+    }
+  };
 
-        const response = await axios(config);
-        if (isMounted) {
-          setState((prev) => ({
-            error: null,
-            data: response.data,
-            loading: false,
-          }));
-        }
-      } catch (error) {
-        console.error("Axios error:", error);
-        if (isMounted) {
-          setState((prev) => ({ data: null, loading: false, error }));
-        }
-      }
-    };
-
-    fetchData();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [method,url,data]);
-
-  return state;
+  return { ...state, fetchData };
 };

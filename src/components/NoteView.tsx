@@ -2,6 +2,8 @@ import { useState } from "react";
 import CustomTextArea from "./CustomTextArea";
 import { useToast } from "../contexts/CustomToast";
 import SavedToolTip from "./SavedToolTip";
+import { useParams } from "react-router-dom";
+import { useNetwork } from "../CustomHooks/useNetwork";
 const data = `
 Lorem ipsum dolor sit amet consectetur. Explicabo ad rerum consequatur
         praesentium nostrum? In itaque minus quos officiis explicabo. Quam sint
@@ -40,6 +42,14 @@ const NoteView = () => {
   const [textData, setTextData] = useState(data);
   const showToast = useToast();
   const [turnOff,setTurnOff]=useState(true)
+  const { folderName, fileName } = useParams();
+
+    const {
+      data: noteResponseData,
+      loading: noteLoading,
+      error: noteError,
+      fetchData: fetchNote,
+    } = useNetwork();
 
   const setAndNotifyData = (someData: string) => {
     setTextData(someData);
@@ -47,11 +57,15 @@ const NoteView = () => {
     showToast("File saved");
   };
 
+  useEffect(()=>{
+
+  })
+
   return (
     <div className="flex flex-col bg-[#181818] w-full h-full p-10 py-15 gap-8 ">
       <div className="w-full flex flex-row  justify-between text-4xl ">
         <div className="font-semibold">{title}</div>
-        <div className=" flex border border-stone-400 rounded-4xl w-10 h-10 items-center justify-center gap-1">
+        <div className=" flex border-2 border-stone-400 rounded-4xl w-9 h-9 items-center justify-center gap-1 hover:bg-[#292929]">
           <div className="bg-stone-400 rounded-4xl w-1 h-1"></div>
           <div className="bg-stone-400 rounded-4xl w-1 h-1"></div>
           <div className="bg-stone-400 rounded-4xl w-1 h-1"></div>
