@@ -4,7 +4,14 @@ import Folders from "./sidebarComponents/Folders";
 import More from "./sidebarComponents/More";
 import { useNetwork } from "../CustomHooks/useNetwork";
 import RecentsShimmer from "./sidebarComponents/RecentsShimmer";
+// import search from '.src/assets/search.svg';
 // import { useNavigate } from "react-router-dom";
+
+
+import logo from "../assets/logo.svg";
+import searchIcon from "../assets/search.svg";
+import closeIcon from "../assets/close.svg";
+import addIcon from "../assets/add.svg"
 
 const recents = [
   "Reflection of the month of june",
@@ -52,9 +59,10 @@ const SideBar = () => {
     <div className="flex flex-col h-full w-135 bg-[#181818] gap-4">
       <div className="flex flex-col gap-4  p-5">
         <div className="flex flex-row  justify-between h-10">
-          <img src="./src/assets/logo.svg" alt="notwed" />
+          <img src={logo} alt="notwed" />
           <img
-            src={`./src/assets/${!search ? "search" : "close"}.svg`}
+            src={search ? closeIcon : searchIcon}
+            // src={!search?{search}:"./src/assets/close.svg"}
             alt="search"
             width={20}
             onClick={() => setSearch((p) => !p)}
@@ -66,7 +74,7 @@ const SideBar = () => {
         <div className="flex flex-row ">
           {search ? (
             <div className="flex flex-row w-full items-center bg-[#242424] px-2 gap-2 py-2">
-              <img src="./src/assets/search.svg" alt="" />
+              <img src={searchIcon} alt="" />
               <input
                 type="text"
                 placeholder="Search note"
@@ -75,7 +83,7 @@ const SideBar = () => {
             </div>
           ) : (
             <button className="flex flex-row w-full items-center bg-[#242424] justify-center py-2 gap-1 hover:bg-[#292929]">
-              <img src="./src/assets/add.svg" alt="" />
+              <img src={addIcon} alt="" />
               <div>New Note</div>
             </button>
           )}
@@ -97,6 +105,8 @@ const SideBar = () => {
           allFolders={foldersResponseData}
           currentFolder={activeFolder}
           setCurrentFolder={setActiveFolder}
+          fetchFolders={fetchFolders}
+          foldersLoading={foldersLoading}
         />
       )}
 

@@ -13,21 +13,13 @@ export const useNetwork = () => {
   });
 
   const fetchData = async (url: string, method: string, data: any) => {
-    setState({ data: null, loading: true, error: null });
-
+    setState((prev) => ({ ...prev, loading: true, error: null }));
     try {
-      const config = {
-        method,
-        url,
-        data,
-      };
-
-      const response = await axios(config);
+      const response = await axios({ method, url, data });
       setState({ data: response.data, loading: false, error: null });
-      console.log(response.data);
     } catch (error) {
       console.error("Axios error:", error);
-      setState({ data: null, loading: false, error });
+      setState((prev) => ({ ...prev, loading: false, error }));
     }
   };
 

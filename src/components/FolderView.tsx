@@ -2,59 +2,6 @@ import { useEffect } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useNetwork } from "../CustomHooks/useNetwork";
 
-const notes = [
-  {
-    filename: "story_intro.txt",
-    utcDate: new Date().toISOString(),
-    snippet: "Once upon a time in a",
-  },
-  {
-    filename: "quick_fox.txt",
-    utcDate: new Date().toISOString(),
-    snippet: "The quick brown fox jumps",
-  },
-  {
-    filename: "javascript_guide.txt",
-    utcDate: new Date().toISOString(),
-    snippet: "JavaScript is a versatile programming",
-  },
-  {
-    filename: "genesis_start.txt",
-    utcDate: new Date().toISOString(),
-    snippet: "In the beginning, there was",
-  },
-  {
-    filename: "mystery_novel.txt",
-    utcDate: new Date().toISOString(),
-    snippet: "She opened the book and",
-  },
-  {
-    filename: "tech_evolution.txt",
-    utcDate: new Date().toISOString(),
-    snippet: "Technology evolves at a rapid",
-  },
-  {
-    filename: "ocean_waves.txt",
-    utcDate: new Date().toISOString(),
-    snippet: "The sound of the ocean",
-  },
-  {
-    filename: "journey_begins.txt",
-    utcDate: new Date().toISOString(),
-    snippet: "A journey of a thousand",
-  },
-  {
-    filename: "sunset_glow.txt",
-    utcDate: new Date().toISOString(),
-    snippet: "As the sun set behind",
-  },
-  {
-    filename: "power_responsibility.txt",
-    utcDate: new Date().toISOString(),
-    snippet: "With great power comes great",
-  },
-];
-
 const FolderView = () => {
   const { folderId } = useParams();
 
@@ -66,15 +13,16 @@ const FolderView = () => {
   } = useNetwork();
 
   useEffect(() => {
-    getFolderContents("/api/notes", "GET", {
-      folderId: folderId,
-      archived: false,
-      favourite: false,
-      page: 1,
-      query: 10,
+    const params = new URLSearchParams({
+      folderId: folderId || "",
+      archived: "false",
+      favourite: "false",
+      deleted: "false",
+      page: "1",
+      limit: "10",
     });
-  }, []);
-  //no dependencies to run the component only once
+    getFolderContents(`/api/notes?${params.toString()}`, "GET", null);
+  }, [folderId]);
 
   return (
     <div className="flex flex-col bg-[#1c1c1c] w-150 gap-8 py-15">
@@ -89,7 +37,10 @@ const FolderView = () => {
               ></div>
             ))
           : folderContents.notes.map((data, index) => (
-              <NavLink to={`/folders/${data.id}`}>
+              <NavLink
+                key={data.id}
+                to={`/folders/${data.folderId}/notes/${data.id}`}
+              >
                 <div
                   key={data.id}
                   className={`flex flex-col gap-2 p-2 ${

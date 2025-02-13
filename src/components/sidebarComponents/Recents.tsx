@@ -1,5 +1,8 @@
 import { useEffect } from "react";
 
+import noteIcon from "../../assets/note.svg";
+import noteDarkerIcon from "../../assets/noteDarker.svg";
+
 const Recents = ({ recentsResponseData, currentFile, setCurrentFile }) => {
   const setFile = (index) => {
     setCurrentFile(recentsResponseData.recentNotes[index]);
@@ -25,9 +28,8 @@ const Recents = ({ recentsResponseData, currentFile, setCurrentFile }) => {
               onClick={() => setFile(index)}
             >
               <img
-                src={`./src/assets/${
-                  currentFile === data ? "note" : "noteDarker"
-                }.svg`}
+                src={currentFile === data ? noteIcon: noteDarkerIcon}
+
                 alt=""
               />
               <div

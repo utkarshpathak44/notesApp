@@ -2,42 +2,54 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useNetwork } from "../../CustomHooks/useNetwork";
 
-const Folders = ({ allFolders, currentFolder, setCurrentFolder }) => {
+import addFolderIcon from "../../assets/addFolder.svg";
+import currentFolderIcon from "../../assets/currentFolder.svg";
+import otherFolderIcon from "../../assets/otherFolder.svg";
+
+const Folders = ({ allFolders, currentFolder, setCurrentFolder,fetchFolders,foldersLoading }) => {
   const setFolder = (index) => {
     setCurrentFolder(allFolders.folders[index]);
   };
   const [newFolder, setNewFolder] = useState("");
   const [addState, setAddState] = useState(true);
-  useEffect(() => {
-    setCurrentFolder(allFolders.folders[0]);
-  }, []);
 
-  const data = {
-    name: "newName",
+  const handleClick = (e) => {
+    const folderId = e.currentTarget.getAttribute("href").split("/").pop(); // Extract folder ID from NavLink
+    const selectedFolder = allFolders.folders.find(
+      (folder) => folder.id.toString() === folderId
+    );
+
+    if (selectedFolder) {
+      setCurrentFolder(selectedFolder);
+    }
   };
 
   const {
     data: foldersResponseData,
-    loading: foldersLoading,
+    loading: folderLoading,
     error: foldersError,
     fetchData: CreateFolder,
   } = useNetwork();
 
-  const handleCreateFolder = () => {
-    CreateFolder("/api/folders", "POST", { name: newFolder });
-    setAddState(true)
+
+  const handleCreateFolder = async() => {
+    await CreateFolder("/api/folders", "POST", { name: newFolder });
+    setAddState(true);
+    // setCurrentFolder(allFolders.folders[0])/
+    //the problem here is to refresh the upper component when a new folder is created
+    fetchFolders()
   };
 
-  useEffect(()=>{
-    console.log(foldersResponseData)
-  },[foldersResponseData])
+  useEffect(() => {
+    console.log(foldersResponseData);
+  }, [foldersResponseData]);
 
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-row w-full px-5 justify-between">
         <div className="text-[#999999]">Folders</div>
         <img
-          src="./src/assets/addFolder.svg"
+          src={addFolderIcon}
           alt=""
           onClick={() => setAddState((prev) => !prev)}
         />
@@ -52,7 +64,7 @@ const Folders = ({ allFolders, currentFolder, setCurrentFolder }) => {
             onChange={(e) => setNewFolder(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                handleCreateFolder(); 
+                handleCreateFolder();
               }
             }}
           />
@@ -64,18 +76,19 @@ const Folders = ({ allFolders, currentFolder, setCurrentFolder }) => {
       <div className="overflow-y-scroll h-100">
         {allFolders.folders.map((data, index) => {
           return (
-            <NavLink to={`/folders/${data.folderId}/notes/${data.id}`}>
+            <NavLink
+              key={data.id}
+              to={`/folders/${data.id}`}
+              onClick={handleClick}
+            >
               <div
                 className={`w-full p-2 px-4 flex flex-row gap-2 ${
                   currentFolder === data ? "bg-[#333333]" : "hover:bg-[#222222]"
                 }`}
-                key={index}
                 onClick={() => setFolder(index)}
               >
                 <img
-                  src={`./src/assets/${
-                    currentFolder === data ? "currentFolder" : "otherFolder"
-                  }.svg`}
+                  src={currentFolder === data ? currentFolderIcon : otherFolderIcon}
                   alt=""
                 />
                 <div
