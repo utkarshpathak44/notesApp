@@ -35,7 +35,7 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
     <textarea
       name=""
       id=""
-      className="w-full h-full text-l font-utk leading-relaxed focus:outline-none resize-none bg-[#181818]"
+      className="w-full h-full text-l leading-relaxed focus:outline-none resize-none bg-[#181818]"
       value={textData}
       onChange={handleTextWrapper}
     ></textarea>
