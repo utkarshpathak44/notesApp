@@ -6,43 +6,34 @@ import addFolderIcon from "../../assets/addFolder.svg";
 import currentFolderIcon from "../../assets/currentFolder.svg";
 import otherFolderIcon from "../../assets/otherFolder.svg";
 
-const Folders = ({ allFolders, currentFolder, setCurrentFolder,fetchFolders,foldersLoading }) => {
-  const setFolder = (index) => {
-    setCurrentFolder(allFolders.folders[index]);
-  };
-  const [newFolder, setNewFolder] = useState("");
-  const [addState, setAddState] = useState(true);
-
-  const handleClick = (e) => {
-    const folderId = e.currentTarget.getAttribute("href").split("/").pop(); // Extract folder ID from NavLink
-    const selectedFolder = allFolders.folders.find(
-      (folder) => folder.id.toString() === folderId
-    );
-
-    if (selectedFolder) {
-      setCurrentFolder(selectedFolder);
-    }
-  };
+const Folders = () => {
 
   const {
     data: foldersResponseData,
-    loading: folderLoading,
+    loading: foldersLoading,
     error: foldersError,
+    fetchData: fetchFolders,
+  } = useNetwork();
+
+  const [newFolder, setNewFolder] = useState("");
+  const [addState, setAddState] = useState(true);
+
+
+  const {
+    data: folderResponseData,
+    loading: folderLoading,
+    error: folderError,
     fetchData: CreateFolder,
   } = useNetwork();
 
-
-  const handleCreateFolder = async() => {
+  const handleCreateFolder = async () => {
     await CreateFolder("/api/folders", "POST", { name: newFolder });
     setAddState(true);
-    // setCurrentFolder(allFolders.folders[0])/
-    //the problem here is to refresh the upper component when a new folder is created
-    fetchFolders()
   };
 
   useEffect(() => {
-    console.log(foldersResponseData);
-  }, [foldersResponseData]);
+    fetchFolders("/api/folders", "GET", {});
+  }, []);
 
   return (
     <div className="flex flex-col gap-2">
@@ -74,7 +65,7 @@ const Folders = ({ allFolders, currentFolder, setCurrentFolder,fetchFolders,fold
       )}
 
       <div className="overflow-y-scroll h-100">
-        {allFolders.folders.map((data, index) => {
+        {!folderLoading&&folderResponseData.folders.map((data, index) => {
           return (
             <NavLink
               key={data.id}
@@ -88,7 +79,9 @@ const Folders = ({ allFolders, currentFolder, setCurrentFolder,fetchFolders,fold
                 onClick={() => setFolder(index)}
               >
                 <img
-                  src={currentFolder === data ? currentFolderIcon : otherFolderIcon}
+                  src={
+                    currentFolder === data ? currentFolderIcon : otherFolderIcon
+                  }
                   alt=""
                 />
                 <div

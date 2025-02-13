@@ -7,11 +7,10 @@ import RecentsShimmer from "./sidebarComponents/RecentsShimmer";
 // import search from '.src/assets/search.svg';
 // import { useNavigate } from "react-router-dom";
 
-
 import logo from "../assets/logo.svg";
 import searchIcon from "../assets/search.svg";
 import closeIcon from "../assets/close.svg";
-import addIcon from "../assets/add.svg"
+import addIcon from "../assets/add.svg";
 
 const recents = [
   "Reflection of the month of june",
@@ -20,39 +19,9 @@ const recents = [
 ];
 const activeFolderInit = "Personal";
 const folders = ["Personal", "Work", "Finances", "Travel", "Events"];
-const frequentsInit = ["Favourites", "Trash", "Archived"];
 
 const SideBar = () => {
-  const [recentFiles, setRecentFiles] = useState(recents);
-  const [allFolders, setAllFolders] = useState(folders);
-  const [currentFile, setCurrentFile] = useState(
-    "Reflection of the month of june"
-  );
-  const [activeFolder, setActiveFolder] = useState(activeFolderInit);
-  const [frequents, setFrequents] = useState(frequentsInit);
-  const [currentFrequent, setCurrentFrequent] = useState("Favourites");
-
   const [search, setSearch] = useState(false);
-  const data = {};
-
-  const {
-    data: recentsResponseData,
-    loading: recentsLoading,
-    error: recentsError,
-    fetchData: fetchRecents,
-  } = useNetwork();
-  const {
-    data: foldersResponseData,
-    loading: foldersLoading,
-    error: foldersError,
-    fetchData: fetchFolders,
-  } = useNetwork();
-
-  useEffect(() => {
-    fetchRecents("/api/notes/recent", "GET", data);
-    fetchFolders("/api/folders", "GET", data);
-  }, []);
-
   // useEffect(() => {});
 
   return (
@@ -62,7 +31,6 @@ const SideBar = () => {
           <img src={logo} alt="notwed" />
           <img
             src={search ? closeIcon : searchIcon}
-            // src={!search?{search}:"./src/assets/close.svg"}
             alt="search"
             width={20}
             onClick={() => setSearch((p) => !p)}
@@ -89,33 +57,9 @@ const SideBar = () => {
           )}
         </div>
       </div>
-      {recentsLoading ? (
-        <RecentsShimmer />
-      ) : (
-        <Recents
-          recentsResponseData={recentsResponseData}
-          currentFile={currentFile}
-          setCurrentFile={setCurrentFile}
-        />
-      )}
-      {foldersLoading ? (
-        <RecentsShimmer />
-      ) : (
-        <Folders
-          allFolders={foldersResponseData}
-          currentFolder={activeFolder}
-          setCurrentFolder={setActiveFolder}
-          fetchFolders={fetchFolders}
-          foldersLoading={foldersLoading}
-        />
-      )}
-
-      <More
-        frequents={frequents}
-        currentFrequent={currentFrequent}
-        setCurrentFrequent={setCurrentFrequent}
-      />
-      {/* <div>{responseData}</div> */}
+      <Recents />
+      <Folders />
+      <More />
     </div>
   );
 };

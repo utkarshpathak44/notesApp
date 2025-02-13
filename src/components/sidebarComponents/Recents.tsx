@@ -1,40 +1,47 @@
 import { useEffect } from "react";
-
 import noteIcon from "../../assets/note.svg";
 import noteDarkerIcon from "../../assets/noteDarker.svg";
+import { useNetwork } from "../../CustomHooks/useNetwork";
+import { useParams } from "react-router-dom";
 
-const Recents = ({ recentsResponseData, currentFile, setCurrentFile }) => {
-  const setFile = (index) => {
-    setCurrentFile(recentsResponseData.recentNotes[index]);
-  };
+const Recents = () => {
+
+  const {folderId,noteId}=useParams()
+
+
+  const {
+    data: recentsResponseData,
+    loading: recentsLoading,
+    error: recentsError,
+    fetchData: fetchRecents,
+  } = useNetwork();
 
   useEffect(() => {
-    setCurrentFile(recentsResponseData.recentNotes[0]);
+    fetchRecents("/api/notes/recent", "GET", {});
   }, []);
 
   return (
     <div className="flex flex-col gap-2">
       <div className="px-5 text-[#999999]">Recents</div>
       <div>
-        {recentsResponseData.recentNotes.map((data, index) => {
+        {!recentsLoading&&recentsResponseData.recentNotes.map((data, index) => {
           return (
             <div
               className={`w-full p-2 h-10 px-4 flex flex-row gap-2 items-center ${
-                currentFile === data
+                noteId === data
                   ? "bg-amber-800"
                   : "hover:bg-[#222222]"
               }`}
               key={index}
-              onClick={() => setFile(index)}
             >
               <img
-                src={currentFile === data ? noteIcon: noteDarkerIcon}
+                src={noteId === data.id ? noteIcon: noteDarkerIcon}
 
                 alt=""
               />
               <div
                 className={
-                  currentFile === data
+                  noteId === data.id
                     ? "text-white font-semibold"
                     : "text-[#999999]"
                 }
