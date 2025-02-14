@@ -10,7 +10,13 @@ const RecentsShimmer = () => {
               key={index}
             >
               {/* <img src="./src/assets/noteDarker.svg" alt="" /> */}
-              <div className="w-full h-3 bg-[#333333] rounded"></div>
+              <div className="h-3 bg-[#333333] rounded animate-pulse"
+              style={{
+                width: `${
+                  Math.floor(Math.random() * (150)) + 120
+                }px`,
+              }}
+              ></div>
             </div>
           );
         })}

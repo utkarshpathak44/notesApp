@@ -7,7 +7,7 @@
 - [x] **Routing**: Done.
 
 - [ ] **Create Notes**: Working currently.
-- [ ] **Deleting and modifying the note attributes**: Working currently.
+- [ ] **Deleting and modifying the note attributes**: partially done.
 
 - [ ] **Delete Notes**: Yet to be done.
 - [ ] **Responsive Design**: Yet to be done.

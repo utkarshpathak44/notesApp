@@ -16,8 +16,11 @@ const Recents = () => {
   } = useNetwork();
 
   useEffect(() => {
-    fetchRecents("/api/notes/recent", "GET", {});
+    fetchRecents("/notes/recent", "GET", {});
   }, []);
+
+  if (recentsError) return <div>Error loading Recents.</div>;
+
 
   return (
     <div className="flex flex-col gap-2">

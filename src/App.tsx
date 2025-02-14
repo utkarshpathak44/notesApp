@@ -4,77 +4,26 @@ import {
   Route,
   useParams,
 } from "react-router-dom";
-import SideBar from "./components/SideBar";
-import FolderView from "./components/FolderView";
-import NoteView from "./components/NoteView";
 import { ToastProvider } from "./contexts/CustomToast";
+import Container from "./components/Container";
+import { PageNotFound } from "./components/PageNotFound";
 
 function App() {
   return (
     <Router>
       <ToastProvider>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div className="flex flex-row w-screen h-screen text-white font-sans">
-              <SideBar />
-              <FolderView />
-              <NoteView />
-            </div>
-          }
-        />
-        <Route
-          path="folders/:folderId"
-          element={
-            <div className="flex flex-row w-screen h-screen text-white font-sans">
-              <SideBar />
-              <FolderView />
-              <NoteView />
-            </div>
-          }
-        />
-        <Route
-          path="folders/:folderId/notes/:noteId"
-          element={
-            <div className="flex flex-row w-screen h-screen text-white font-sans">
-              <SideBar />
-              <FolderView />
-              <NoteView />
-            </div>
-          }
-        />
-        <Route
-          path="trash"
-          element={
-            <div className="flex flex-row w-screen h-screen text-white font-sans">
-              <SideBar />
-              <FolderView />
-              <NoteView />
-            </div>
-          }
-        />
-        <Route
-          path="archived"
-          element={
-            <div className="flex flex-row w-screen h-screen text-white font-sans">
-              <SideBar />
-              <FolderView />
-              <NoteView />
-            </div>
-          }
-        />
-        <Route
-          path="favorites"
-          element={
-            <div className="flex flex-row w-screen h-screen text-white font-sans">
-              <SideBar />
-              <FolderView />
-              <NoteView />
-            </div>
-          }
-        />
-      </Routes>
+        <Routes>
+          <Route path="/" element={<Container />} />
+          <Route path="folders/:folderId" element={<Container />} />
+          <Route
+            path="folders/:folderId/notes/:noteId"
+            element={<Container />}
+          />
+          <Route path="trash" element={<Container />} />
+          <Route path="archived" element={<Container />} />
+          <Route path="favorites" element={<Container />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
       </ToastProvider>
     </Router>
   );

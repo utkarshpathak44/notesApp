@@ -14,20 +14,19 @@ const FolderView = () => {
 
   useEffect(() => {
     const params = new URLSearchParams({
-      folderId: folderId || "",
+      folderId: folderId === "undefined" ? "" : folderId || "",
       archived: "false",
       favourite: "false",
       deleted: "false",
       page: "1",
-      limit: "10",
+      limit: "100",
     });
-    getFolderContents(`/api/notes?${params.toString()}`, "GET", null);
+    getFolderContents(`/notes?${params.toString()}`, "GET", null);
   }, [folderId]);
 
   return (
     <div className="flex flex-col bg-[#1c1c1c] w-150 gap-8 py-15">
       <h2 className="text-2xl px-4">
-        {" "}
         {folderLoading
           ? "Loading Folder..."
           : folderContents?.notes?.length
@@ -39,10 +38,23 @@ const FolderView = () => {
           ? Array.from({ length: 9 }).map((_, index) => (
               <div
                 key={index}
-                className="flex flex-col gap-2 p-2 bg-[#373737] rounded-md animate-pulse h-16"
-              ></div>
+                className="flex flex-col gap-3 p-3 bg-[#222222] rounded animate-pulse h-18"
+              >
+                <div
+                  className={`h-4 bg-[#333333] animate-pulse rounded`}
+                  style={{
+                    width: `${
+                      Math.floor(Math.random() * (150)) + 120
+                    }px`,
+                  }}
+                ></div>
+                <div className="flex flex-row gap-2">
+                  <div className="h-4 bg-[#333333] animate-pulse w-10 rounded"></div>
+                  <div className="h-4 bg-[#333333] animate-pulse w-20 rounded"></div>
+                </div>
+              </div>
             ))
-          : folderContents.notes.map((data, index) => (
+          : folderContents?.notes.map((data, index) => (
               <NavLink
                 key={data.id}
                 to={`/folders/${data.folderId}/notes/${data.id}`}
@@ -51,7 +63,7 @@ const FolderView = () => {
                   key={data.id}
                   className={`flex flex-col gap-2 p-2 ${
                     data.folderId === folderId ? "bg-[#373737]" : "bg-[#242424]"
-                  }  rounded-md`}
+                  }  rounded`}
                 >
                   <div className="text-xl">{data.title}</div>
                   <div className="flex flex-row gap-4">
