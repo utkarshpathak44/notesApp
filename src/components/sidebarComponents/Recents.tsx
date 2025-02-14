@@ -2,12 +2,11 @@ import { useEffect } from "react";
 import noteIcon from "../../assets/note.svg";
 import noteDarkerIcon from "../../assets/noteDarker.svg";
 import { useNetwork } from "../../CustomHooks/useNetwork";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
+import RecentsShimmer from "./RecentsShimmer";
 
 const Recents = () => {
-
-  const {folderId,noteId}=useParams()
-
+  const { folderId, noteId } = useParams();
 
   const {
     data: recentsResponseData,
@@ -24,33 +23,26 @@ const Recents = () => {
     <div className="flex flex-col gap-2">
       <div className="px-5 text-[#999999]">Recents</div>
       <div>
-        {!recentsLoading&&recentsResponseData.recentNotes.map((data, index) => {
-          return (
-            <div
-              className={`w-full p-2 h-10 px-4 flex flex-row gap-2 items-center ${
-                noteId === data
-                  ? "bg-amber-800"
-                  : "hover:bg-[#222222]"
-              }`}
-              key={index}
-            >
-              <img
-                src={noteId === data.id ? noteIcon: noteDarkerIcon}
-
-                alt=""
-              />
+        {recentsLoading ? <RecentsShimmer/> : (
+          recentsResponseData?.recentNotes?.map((data) => (
+            <NavLink key={data.id} to={`/folders/${data.folderId}/notes/${data.id}`}>
               <div
-                className={
-                  noteId === data.id
-                    ? "text-white font-semibold"
-                    : "text-[#999999]"
-                }
+                className={`w-full p-2 h-10 px-4 flex flex-row gap-2 items-center ${
+                  noteId === data.id ? "bg-amber-800" : "hover:bg-[#222222]"
+                }`}
               >
-                {data.title}
+                <img src={noteId === data.id ? noteIcon : noteDarkerIcon} alt="" />
+                <div
+                  className={
+                    noteId === data.id ? "text-white font-semibold" : "text-[#999999]"
+                  }
+                >
+                  {data.title}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            </NavLink>
+          ))
+        )}
       </div>
     </div>
   );

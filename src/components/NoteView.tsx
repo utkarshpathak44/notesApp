@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { useNetwork } from "../CustomHooks/useNetwork";
 
 const NoteView = () => {
-  const [title, setTitle] = useState("A random note");
+  const [title, setTitle] = useState("");
   const [textData, setTextData] = useState("");
   const showToast = useToast();
   const [turnOff, setTurnOff] = useState(true);
@@ -19,7 +19,7 @@ const NoteView = () => {
     error: noteError,
     fetchData: fetchNote,
   } = useNetwork();
-  
+
   // Save note data
   const {
     data: sentNoteData,
@@ -28,12 +28,13 @@ const NoteView = () => {
     fetchData: sendNote,
   } = useNetwork();
 
-  // if noteid changes, now note is fetched
+  // Fetch the note when noteId changes
   useEffect(() => {
     if (!noteId) {
-      console.error("No noteId found");
       return;
     }
+    // setTextData("");
+    // setTitle("");
 
     console.log("Fetching note with ID:", noteId);
     fetchNote(`/api/notes/${noteId}`, "GET", {});
@@ -48,41 +49,43 @@ const NoteView = () => {
       return;
     }
 
-    if (noteResponseData?.title && noteResponseData?.content) {
+    if (!loadingNote && noteResponseData?.note) {
       console.log("Fetched noteResponseData:", noteResponseData);
-      setTitle(noteResponseData.title);
-      setTextData(noteResponseData.content);
+      setTitle(noteResponseData.note.title);
+      setTextData(noteResponseData.note.content);
     }
-  }, [noteResponseData, loadingNote, noteError]);
+  }, [loadingNote, noteError]);
+
+
 
   // Save the note when edited
-  const setAndNotifyData = async (someData: string) => {
-    setTextData(someData);
+  const setAndNotifyData = async () => {
     setTurnOff(false);
 
     if (!noteId) {
       console.error("Cannot save: noteId is missing.");
       return;
     }
-
-    await sendNote(`/api/notes/${noteId}`, "PATCH", {
-      folderId: folderId || null,
-      title: title, // Use updated title state
-      content: someData, // Use the latest input
-    });
-
+  
+    const updatedNote = { folderId, title, content: textData };
+  
+    const response = await sendNote(`/api/notes/${noteId}`, "PATCH", updatedNote);
+  
     if (sendingNoteError) {
       console.error("Error saving note:", sendingNoteError);
       return;
     }
-
+  
+    // Update state only if API call succeeds
+    setTitle(updatedNote.title);
+    setTextData(updatedNote.content);
     showToast("File saved");
   };
 
   return (
     <div className="flex flex-col bg-[#181818] w-full h-full p-10 py-15 gap-8">
       <div className="w-full flex flex-row justify-between text-4xl">
-        <div className="font-semibold">{title}</div>
+        <div className="font-semibold"><textarea className="focus:outline-none resize-none h-13" name="" id="" value={title} onChange={e=>setTitle(e.target.value)}></textarea></div>
         <div className="flex border-2 border-stone-400 rounded-4xl w-9 h-9 items-center justify-center gap-1 hover:bg-[#292929]">
           <div className="bg-stone-400 rounded-4xl w-1 h-1"></div>
           <div className="bg-stone-400 rounded-4xl w-1 h-1"></div>
@@ -106,7 +109,7 @@ const NoteView = () => {
           <div className="ml-10">Personal</div>
         </div>
       </div>
-      <CustomTextArea text={textData} setAndNotifyData={setAndNotifyData} />
+      <CustomTextArea text={textData} setAndNotifyData={setAndNotifyData} setTextData={setTextData} />
       <SavedToolTip turnOff={turnOff} />
     </div>
   );

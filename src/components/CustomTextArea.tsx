@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, } from "react";
 interface CustomTextAreaProps {
   text: string;
-  setAndNotifyData: (value: string) => void;
+  setAndNotifyData: () => void;
+  setTextData:any
 }
 
 const CustomTextArea: React.FC<CustomTextAreaProps> = ({
   text,
   setAndNotifyData,
+  setTextData
 }) => {
-  const [textData, setTextData] = useState<string>(text);
 
   const handleTextWrapper = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextData(e.target.value);
@@ -18,7 +19,7 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
     const handleSaveShortcut = (event:any) => {
       if (event.ctrlKey && event.key === "s") {
         event.preventDefault();
-        setAndNotifyData(textData);
+        setAndNotifyData();
     }
     };
 
@@ -36,8 +37,9 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
       name=""
       id=""
       className="w-full h-full text-l leading-relaxed focus:outline-none resize-none bg-[#181818]"
-      value={textData}
+      value={text}
       onChange={handleTextWrapper}
+      onBlur={() => setAndNotifyData()}
     ></textarea>
   );
 };
