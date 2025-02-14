@@ -3,7 +3,7 @@ import { NavLink, useParams } from "react-router-dom";
 import { useNetwork } from "../CustomHooks/useNetwork";
 
 const FolderView = () => {
-  const { folderId } = useParams();
+  const { folderId,noteId } = useParams();
 
   const {
     data: folderContents,
@@ -44,7 +44,7 @@ const FolderView = () => {
                 <div
                   key={data.id}
                   className={`flex flex-col gap-2 p-2 ${
-                    index === 3 ? "bg-[#373737]" : "bg-[#242424]"
+                    data.folderId===folderId ? "bg-[#373737]" : "bg-[#242424]"
                   }  rounded-md`}
                 >
                   <div className="text-xl">{data.title}</div>
