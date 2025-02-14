@@ -23,14 +23,14 @@ const Folders = () => {
   const { fetchData: CreateFolder } = useNetwork();
 
   const handleCreateFolder = async () => {
-    await CreateFolder("/api/folders", "POST", { name: newFolder });
-    fetchFolders("/api/folders", "GET", {}); // Fetch updated folders
+    await CreateFolder("/folders", "POST", { name: newFolder });
+    fetchFolders("/folders", "GET", {}); // Fetch updated folders
     setAddState(true);
     setNewFolder("");
   };
 
   useEffect(() => {
-    fetchFolders("/api/folders", "GET", {});
+    fetchFolders("/folders", "GET", {});
   }, []);
 
   // if (foldersLoading) return <div>Loading...</div>;
@@ -47,6 +47,7 @@ const Folders = () => {
           className="cursor-pointer"
         />
       </div>
+      
 
       {!addState && !foldersLoading && (
         <div className="w-full p-2 px-4 flex flex-row bg-[#242424] gap-2 py-2">

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import Recents from "./sidebarComponents/Recents";
 import Folders from "./sidebarComponents/Folders";
 import More from "./sidebarComponents/More";
-import { useNetwork } from "../CustomHooks/useNetwork";
-import RecentsShimmer from "./sidebarComponents/RecentsShimmer";
+import { NavLink, useParams } from "react-router-dom";
+
 // import search from '.src/assets/search.svg';
 // import { useNavigate } from "react-router-dom";
 
@@ -22,6 +22,9 @@ const folders = ["Personal", "Work", "Finances", "Travel", "Events"];
 
 const SideBar = () => {
   const [search, setSearch] = useState(false);
+  // const [EnterNewNode, setEnterNewNode] = useState(false);
+  const { folderId, noteId } = useParams();
+
   // useEffect(() => {});
 
   return (
@@ -50,10 +53,12 @@ const SideBar = () => {
               />
             </div>
           ) : (
-            <button className="flex flex-row w-full items-center bg-[#242424] justify-center py-2 gap-1 hover:bg-[#292929]">
-              <img src={addIcon} alt="" />
-              <div>New Note</div>
-            </button>
+            <NavLink className="flex flex-row w-full items-center" to={`/folders/${folderId}/notes/newnote`}>
+              <button className="flex flex-row w-full items-center bg-[#242424] justify-center py-2 gap-1 hover:bg-[#292929]">
+                <img src={addIcon} alt="" />
+                <div className="font-semibold">New Note</div>
+              </button>
+            </NavLink>
           )}
         </div>
       </div>
