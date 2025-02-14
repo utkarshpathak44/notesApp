@@ -1,11 +1,14 @@
 # NotesApp
 ## Features
 
-- [x] **Edit Notes**: Done.
 - [x] **UI**: Done.
+- [x] **Calling api to display Recents, Folders**: Done.
+- [x] **Edit Notes**: Done.
 - [x] **Routing**: Done.
 
-- [ ] **Create Notes**: Yet to be done.
+- [ ] **Create Notes**: Working currently.
+- [ ] **Deleting and modifying the note attributes**: Working currently.
+
 - [ ] **Delete Notes**: Yet to be done.
 - [ ] **Responsive Design**: Yet to be done.
 - [ ] **Search Notes**: Yet to be done.

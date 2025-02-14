@@ -22,6 +22,7 @@ const folders = ["Personal", "Work", "Finances", "Travel", "Events"];
 
 const SideBar = () => {
   const [search, setSearch] = useState(false);
+  const [EnterNewNode,setEnterNewNode] =useState(false)
   // useEffect(() => {});
 
   return (
@@ -52,7 +53,7 @@ const SideBar = () => {
           ) : (
             <button className="flex flex-row w-full items-center bg-[#242424] justify-center py-2 gap-1 hover:bg-[#292929]">
               <img src={addIcon} alt="" />
-              <div>New Note</div>
+              <div className="font-semibold">New Note</div>
             </button>
           )}
         </div>

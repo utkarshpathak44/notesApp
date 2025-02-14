@@ -3,7 +3,7 @@ import { NavLink, useParams } from "react-router-dom";
 import { useNetwork } from "../CustomHooks/useNetwork";
 
 const FolderView = () => {
-  const { folderId,noteId } = useParams();
+  const { folderId, noteId } = useParams();
 
   const {
     data: folderContents,
@@ -26,9 +26,15 @@ const FolderView = () => {
 
   return (
     <div className="flex flex-col bg-[#1c1c1c] w-150 gap-8 py-15">
-      <h2 className="text-2xl px-4">Personal</h2>
+      <h2 className="text-2xl px-4">
+        {" "}
+        {folderLoading
+          ? "Loading Folder..."
+          : folderContents?.notes?.length
+          ? folderContents.notes[0].folder?.name || "No Folder Name"
+          : "No Notes Found"}
+      </h2>
       <div className="flex flex-col gap-4 overflow-y-scroll px-4">
-        {/* Show skeleton loaders when loading */}
         {folderLoading
           ? Array.from({ length: 9 }).map((_, index) => (
               <div
@@ -44,7 +50,7 @@ const FolderView = () => {
                 <div
                   key={data.id}
                   className={`flex flex-col gap-2 p-2 ${
-                    data.folderId===folderId ? "bg-[#373737]" : "bg-[#242424]"
+                    data.folderId === folderId ? "bg-[#373737]" : "bg-[#242424]"
                   }  rounded-md`}
                 >
                   <div className="text-xl">{data.title}</div>
