@@ -3,7 +3,7 @@ export const NoteViewShimmer = () => {
     <div className="flex flex-col bg-[#181818] w-full h-full p-10 py-15 ">
       <div className="w-full flex flex-row justify-between text-4xl">
         <div
-          className=" h-10 bg-[#222222] animate-pulse rounded-md"
+          className=" h-10 bg-[#222222] animate-pulse rounded"
           style={{
             width: `${Math.floor(Math.random() * 400) + 150}px`,
           }}
@@ -19,8 +19,8 @@ export const NoteViewShimmer = () => {
         </div>
       </div>
       <div></div>
-      <div className="w-full h-full text-l resize-none bg-[#181818] rounded mb-5 flex flex-col gap-1 overflow-y-scroll">
-        {[...Array(Math.floor(Math.random() * 3) + 2)].map((_, index) => (
+      <div className="w-full h-full text-l resize-none bg-[#181818] rounded mb-5 flex flex-col gap-1">
+        {[...Array(Math.floor(Math.random() * 3) + 3)].map((_, index) => (
           <div key={index} className="flex flex-col gap-1">
             {/* Inner mapped divs */}
             {[...Array(Math.floor(Math.random() * 2) + 2)].map(
@@ -43,7 +43,7 @@ export const NoteViewShimmer = () => {
         ))}
       </div>
 
-      <div className=" h-10 w-60 bg-[#333333] animate-pulse rounded-md"></div>
+      <div className=" h-10 w-80 bg-[#222222] animate-pulse rounded-md"></div>
     </div>
   );
 };

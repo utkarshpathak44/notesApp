@@ -167,110 +167,110 @@ const NoteView = () => {
     );
 
   return (
-    <NoteViewShimmer/>
-    // <div className="flex flex-col bg-[#181818] w-full h-full p-10 py-15 ">
-    //   <div className="w-full flex flex-row justify-between text-4xl">
-    //     <div className="font-semibold">
-    //       <textarea
-    //         className="focus:outline-none resize-none h-13"
-    //         name=""
-    //         id=""
-    //         placeholder="Enter Title..."
-    //         value={noteData.title}
-    //         onChange={(e) =>
-    //           setNoteData((prev) => ({
-    //             ...prev,
-    //             title: e.target.value,
-    //           }))
-    //         }
-    //       ></textarea>
-    //     </div>
-    //     <div
-    //       className="flex border-2 border-stone-400 rounded-4xl w-9 h-9 items-center justify-center gap-1 hover:bg-[#292929]"
-    //       onClick={() => setNoteOptions((p) => !p)}
-    //     >
-    //       <div className="bg-stone-400 rounded-4xl w-1 h-1"></div>
-    //       <div className="bg-stone-400 rounded-4xl w-1 h-1"></div>
-    //       <div className="bg-stone-400 rounded-4xl w-1 h-1"></div>
-    //     </div>
-    //   </div>
-    //   <div className="flex flex-col gap-2 relative pt-8 pb-8">
-    //     {noteOptions ? (
-    //       <div className="absolute top-0 right-0 px-0 py-4 bg-[#242424] w-80 text-xl rounded-xl flex-col gap-2 ">
-    //         <div
-    //           className="flex h-15 flex-row gap-4 items-center  px-8 hover:bg-[#444444] cursor-pointer"
-    //           onClick={(e) => {
-    //             setNoteData((prev) => ({
-    //               ...prev,
-    //               isFavorite: noteData.isFavorite ? false : true,
-    //             }));
-    //             setAndNotifyData();
-    //           }}
-    //         >
-    //           <img src={favouritesIcon} alt="" className="w-6 h-6 " />
-    //           <div>
-    //             {noteData.isFavorite
-    //               ? "Remove from Favourites"
-    //               : "Add to favourites"}
-    //           </div>
-    //         </div>
-    //         <div
-    //           className="flex h-15 flex-row gap-4 items-center px-8 hover:bg-[#444444]"
-    //           onClick={(e) => {
-    //             setNoteData((prev) => ({
-    //               ...prev,
-    //               isArchived: noteData.isFavorite ? false : true,
-    //             }));
-    //             setAndNotifyData();
-    //           }}
-    //         >
-    //           <img src={archivedIcon} alt="" className="w-6 h-6" />
-    //           <div>
-    //             {noteData.isArchived ? "Remove from archived" : "Archive"}
-    //           </div>
-    //         </div>
-    //         <hr className="border-[#444444] my-3" />
-    //         <Link to={`/folders/{}`}>
-    //           <div
-    //             className="flex h-15 flex-row gap-4 items-center px-8 hover:bg-[#444444]"
-    //             onClick={() => {
-    //               sendNote(`/notes/${noteId}`, "DELETE", {});
-    //             }}
-    //           >
-    //             <img src={trashIcon} alt="" className="w-6 h-6" />
-    //             <div>Delete</div>
-    //           </div>
-    //         </Link>
-    //       </div>
-    //     ) : (
-    //       <></>
-    //     )}
-    //     <div className="flex flex-row gap-5">
-    //       <div>
-    //         <img src={calenderIcon} alt="Calendar" />
-    //       </div>
-    //       <div className="text-[#999999]">Date</div>
-    //       <div className="ml-10">
-    //         {" "}
-    //         {new Date(noteResponseData?.note.createdAt).toLocaleDateString("en-GB")}
-    //       </div>
-    //     </div>
-    //     <hr className="border-[#292929]" />
-    //     <div className="flex flex-row gap-5">
-    //       <div>
-    //         <img src={folderIcon}alt="Folder" />
-    //       </div>
-    //       <div className="text-[#999999]">Folder</div>
-    //       <div className="ml-10">{noteResponseData?.note.folder.name}</div>
-    //     </div>
-    //   </div>
-    //   <CustomTextArea
-    //     noteData={noteData}
-    //     setAndNotifyData={setAndNotifyData}
-    //     setNoteData={setNoteData}
-    //   ></CustomTextArea>
-    //   <SavedToolTip turnOff={turnOff} />
-    // </div>
+    loadingNote?<NoteViewShimmer/>:
+    <div className="flex flex-col bg-[#181818] w-full h-full p-10 py-15 ">
+      <div className="w-full flex flex-row justify-between text-4xl">
+        <div className="font-semibold">
+          <textarea
+            className="focus:outline-none resize-none h-13"
+            name=""
+            id=""
+            placeholder="Enter Title..."
+            value={noteData.title}
+            onChange={(e) =>
+              setNoteData((prev) => ({
+                ...prev,
+                title: e.target.value,
+              }))
+            }
+          ></textarea>
+        </div>
+        <div
+          className="flex border-2 border-stone-400 rounded-4xl w-9 h-9 items-center justify-center gap-1 hover:bg-[#292929]"
+          onClick={() => setNoteOptions((p) => !p)}
+        >
+          <div className="bg-stone-400 rounded-4xl w-1 h-1"></div>
+          <div className="bg-stone-400 rounded-4xl w-1 h-1"></div>
+          <div className="bg-stone-400 rounded-4xl w-1 h-1"></div>
+        </div>
+      </div>
+      <div className="flex flex-col gap-2 relative pt-8 pb-8">
+        {noteOptions ? (
+          <div className="absolute top-0 right-0 px-0 py-4 bg-[#242424] w-80 text-xl rounded-xl flex-col gap-2 ">
+            <div
+              className="flex h-15 flex-row gap-4 items-center  px-8 hover:bg-[#444444] cursor-pointer"
+              onClick={(e) => {
+                setNoteData((prev) => ({
+                  ...prev,
+                  isFavorite: noteData.isFavorite ? false : true,
+                }));
+                setAndNotifyData();
+              }}
+            >
+              <img src={favouritesIcon} alt="" className="w-6 h-6 " />
+              <div>
+                {noteData.isFavorite
+                  ? "Remove from Favourites"
+                  : "Add to favourites"}
+              </div>
+            </div>
+            <div
+              className="flex h-15 flex-row gap-4 items-center px-8 hover:bg-[#444444]"
+              onClick={(e) => {
+                setNoteData((prev) => ({
+                  ...prev,
+                  isArchived: noteData.isFavorite ? false : true,
+                }));
+                setAndNotifyData();
+              }}
+            >
+              <img src={archivedIcon} alt="" className="w-6 h-6" />
+              <div>
+                {noteData.isArchived ? "Remove from archived" : "Archive"}
+              </div>
+            </div>
+            <hr className="border-[#444444] my-3" />
+            <Link to={`/folders/{}`}>
+              <div
+                className="flex h-15 flex-row gap-4 items-center px-8 hover:bg-[#7f4242]"
+                onClick={() => {
+                  sendNote(`/notes/${noteId}`, "DELETE", {});
+                }}
+              >
+                <img src={trashIcon} alt="" className="w-6 h-6" />
+                <div>Delete</div>
+              </div>
+            </Link>
+          </div>
+        ) : (
+          <></>
+        )}
+        <div className="flex flex-row gap-5">
+          <div>
+            <img src={calenderIcon} alt="Calendar" />
+          </div>
+          <div className="text-[#999999]">Date</div>
+          <div className="ml-10">
+            {" "}
+            {new Date(noteResponseData?.note.createdAt).toLocaleDateString("en-GB")}
+          </div>
+        </div>
+        <hr className="border-[#292929]" />
+        <div className="flex flex-row gap-5">
+          <div>
+            <img src={folderIcon}alt="Folder" />
+          </div>
+          <div className="text-[#999999]">Folder</div>
+          <div className="ml-10">{noteResponseData?.note.folder.name}</div>
+        </div>
+      </div>
+      <CustomTextArea
+        noteData={noteData}
+        setAndNotifyData={setAndNotifyData}
+        setNoteData={setNoteData}
+      ></CustomTextArea>
+      <SavedToolTip turnOff={turnOff} />
+    </div>
   );
 };
 
