@@ -64,6 +64,7 @@ const NoteView = () => {
     }
     console.log("Fetching note with ID:", noteId);
     fetchNote(`/notes/${noteId}`, "GET", {});
+    setNoteOptions(false)
   }, [noteId]);
 
   // Update state when noteResponseData is received

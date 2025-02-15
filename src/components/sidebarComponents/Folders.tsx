@@ -97,7 +97,7 @@ const Folders = () => {
           foldersResponseData?.folders?.map((data) => (
             <NavLink key={data.id} to={`/folders/${data.id}`}>
               <div
-                className={`w-full p-2 px-4 flex flex-row gap-2 ${
+                className={`w-full p-2 px-4 flex flex-row gap-2 transition-all ${
                   folderId === data.id ? "bg-[#333333]" : "hover:bg-[#222222]"
                 }`}
               >

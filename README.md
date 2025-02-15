@@ -11,12 +11,11 @@
 - [x] **Renaming Folders**: Done.
 - [x] **Deleting Folders**: Done.
 - [x] **Implement the toaster at all the http requests**: Done.
-
-- [ ] **Pagination in the FolderView Section**: High Priority
-- [ ] **Implementing More folders**: High Priority
-
-- [ ] **Changing notes' Folder**: High Priority
-- [ ] **Changing notes' Attributes**: High Priority
+- [x] **Pagination in the FolderView Section**: Done.
+- [x] **Implementing More folders**: Done.
+- [x] **Sidebar done, except search**: Done.
+- [ ] **Changing notes' Folder**: Currently working
+- [ ] **Changing notes' Attributes**: Currently Working
 - [ ] **When a new note is created, automatically redirect to it's link**: High Priority
 - [ ] **Open only the certain folder when / is opened**: High Priority
 - [ ] **Impletement tailwind the proper way**: High priority.
