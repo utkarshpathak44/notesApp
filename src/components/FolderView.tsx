@@ -62,7 +62,7 @@ const FolderView = () => {
                 <div
                   key={data.id}
                   className={`flex flex-col gap-2 p-2 ${
-                    data.folderId === folderId ? "bg-[#373737]" : "bg-[#242424]"
+                    data.id === noteId ? "bg-[#333333]" : "bg-[#222222]"
                   }  rounded`}
                 >
                   <div className="text-xl">{data.title}</div>
