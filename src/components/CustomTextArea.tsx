@@ -4,12 +4,14 @@ interface CustomTextAreaProps {
   noteData: any;
   setAndNotifyData: () => void;
   setNoteData: any;
+  hideAllOptions: any
 }
 
 const CustomTextArea: React.FC<CustomTextAreaProps> = ({
   noteData,
   setAndNotifyData,
   setNoteData,
+  hideAllOptions
 }) => {
   const [debouncedContent, setDebouncedContent] = useState(noteData.content);
 
@@ -53,6 +55,7 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
       className="w-full h-full text-l leading-relaxed focus:outline-none resize-none bg-[#181818]"
       value={noteData.content}
       onChange={handleTextWrapper}
+      onClick={hideAllOptions}
     ></textarea>
   );
 };

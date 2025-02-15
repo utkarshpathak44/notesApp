@@ -3,8 +3,12 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
 
+@theme{
+  --default-font-family: "Source Sans 3", "sans-sarif"
+}
+
 :root {
-    --font-utk: "Source Sans 3";
+    /* --font-utk: "Source Sans 3"; */
     --color-regal-blue: #243c5a;
     --color-avocado-100: oklch(0.99 0 0);
     --color-avocado-200: oklch(0.98 0.04 113.22);
@@ -14,10 +18,10 @@
     --color-avocado-600: oklch(0.53 0.12 118.34);
   }
   
-/* 
+
 body {
-    font-family: "Source Sans Pro", sans-serif;
-  } */
+    font-family: "Source Sans 3", sans-serif;
+  }
 
 
   .Toastify__toast-container--bottom-left {
