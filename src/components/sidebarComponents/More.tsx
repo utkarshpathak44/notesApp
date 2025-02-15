@@ -18,9 +18,9 @@ const getIcon = (name) => {
 };
 
 const frequentsInit = [
-  { name: "Favourites", path: "/favorites" },
-  { name: "Trash", path: "/trash" },
-  { name: "Archived", path: "/archived" },
+  { name: "Favourites", path: "/folders/favorites" },
+  { name: "Trash", path: "/folders/trash" },
+  { name: "Archived", path: "/folders/archived" },
 ];
 
 const More = () => {

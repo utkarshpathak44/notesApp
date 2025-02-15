@@ -26,11 +26,11 @@ const FolderView = () => {
       //only fetch the first page/first 10 notes when the page changes
     });
 
-    if (location.pathname.startsWith("/favorites")) {
+    if (location.pathname.startsWith("/folders/favorites")) {
       params.set("favourite", "true"); // Fetch favourite notes
-    } else if (location.pathname.startsWith("/archived")) {
+    } else if (location.pathname.startsWith("/folders/archived")) {
       params.set("archived", "true"); // Fetch archived notes
-    } else if (location.pathname.startsWith("/trash")) {
+    } else if (location.pathname.startsWith("/folders/trash")) {
       params.set("deleted", "true"); // Fetch trashed notes
     } else if (folderId) {
       params.set("folderId", folderId === "undefined" ? "" : folderId || "");
@@ -52,16 +52,16 @@ const FolderView = () => {
       archived: "false",
       favourite: "false",
       deleted: "false",
-      page: "1",
+      page: page.toString(),
       limit: "10",
       //only fetch the first page/first 10 notes when the page changes
     });
 
-    if (location.pathname.startsWith("/favorites")) {
+    if (location.pathname.startsWith("/folders/favorites")) {
       params.set("favourite", "true"); // Fetch favourite notes
-    } else if (location.pathname.startsWith("/archived")) {
+    } else if (location.pathname.startsWith("/folders/archived")) {
       params.set("archived", "true"); // Fetch archived notes
-    } else if (location.pathname.startsWith("/trash")) {
+    } else if (location.pathname.startsWith("/folders/trash")) {
       params.set("deleted", "true"); // Fetch trashed notes
     } else if (folderId) {
       params.set("folderId", folderId === "undefined" ? "" : folderId || "");
@@ -86,15 +86,15 @@ const FolderView = () => {
       <h2 className="text-2xl px-4">
         {folderLoading
           ? "Loading Folder..."
-          : location.pathname.startsWith("/favorites")
+          : location.pathname.startsWith("/folders/favorites")
           ? "Favourite Notes"
-          : location.pathname.startsWith("/archived")
+          : location.pathname.startsWith("/folders/archived")
           ? "Archived Notes"
-          : location.pathname.startsWith("/trash")
-          ? "Trash"
-          : folderContents?.folder?.name
-          ? folderContents.folder.name
-          : "No Folder Name"}
+          : location.pathname.startsWith("/folders/trash")
+          ? "Trashed notes"
+          : folderContents?.notes[0]?.folder?.name
+          ? folderContents.notes[0].folder.name
+          : "No Data"}
       </h2>
 
       <div className="flex flex-col gap-4 overflow-y-scroll px-4">
@@ -122,8 +122,8 @@ const FolderView = () => {
                 to={`/folders/${data.folderId}/notes/${data.id}`}
               >
                 <div
-                  className={`flex flex-col gap-2 p-2 ${
-                    data.id === noteId ? "bg-[#333333]" : "bg-[#222222]"
+                  className={`flex flex-col gap-2 p-2 transition-all ${
+                    data.id === noteId ? "bg-[#333333]" : "bg-[#222222] hover:bg-[#282828]"
                   }  rounded`}
                 >
                   <div className="text-xl">{data.title}</div>
