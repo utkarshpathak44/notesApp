@@ -19,6 +19,7 @@
 - [x] **Make the note options dissappear if clicked outside**
 - [x] **Fix the FolderView component not displaying correct name of the folder**
 - [x] **Changing notes' Attributes**
+- [ ] **folder name** if the folder dosent have any nots, then we cant find the name of the folder to display on the top of the component
 - [ ] **When a new note is created, automatically redirect to it's link** High Priority, but not sure how to do it!!
 - [ ] **Search Notes** Ongoing
 - [ ] **Open only the certain folder when / is opened** Easy, just hard code the note
