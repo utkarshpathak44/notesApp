@@ -1,7 +1,7 @@
+import { NavLink, useLocation } from "react-router-dom";
 import favouritesIcon from "../../assets/Favourites.svg";
 import trashIcon from "../../assets/Trash.svg";
 import archivedIcon from "../../assets/Archived.svg";
-import { useParams } from "react-router-dom";
 import { useState } from "react";
 
 const getIcon = (name) => {
@@ -17,11 +17,15 @@ const getIcon = (name) => {
   }
 };
 
-const frequentsInit = ["Favourites", "Trash", "Archived"];
+const frequentsInit = [
+  { name: "Favourites", path: "/favorites" },
+  { name: "Trash", path: "/trash" },
+  { name: "Archived", path: "/archived" },
+];
 
 const More = () => {
-  const [frequents,setFrequents]=useState(frequentsInit)
-  const {folderId,noteId}=useParams()
+  const [frequents, setFrequents] = useState(frequentsInit);
+  const location = useLocation(); // Get current URL path
 
   return (
     <div className="flex flex-col gap-2 text-[#999999]">
@@ -29,25 +33,20 @@ const More = () => {
         <div>More</div>
       </div>
       <div>
-        {frequentsInit.map((data, index) => {
+        {frequents.map(({ name, path }, index) => {
+          const isActive = location.pathname.startsWith(path); // Check if current path matches
+
           return (
-            <div
-              className={`w-full p-2 px-4   flex flex-row gap-2 ${
-                1 === data ? "bg-[#333333]" : "hover:bg-[#222222]"
-              }`}
-              key={index}
-            >
-              <img src={getIcon(data)} alt="" />
+            <NavLink to={path} key={index} className="block">
               <div
-                className={
-                  !(1 === data)
-                    ? "text-[#999999]"
-                    : "text-white font-semibold"
-                }
+                className={`w-full p-2 px-4 flex flex-row gap-2 transition-all ${
+                  isActive ? "bg-[#333333] text-white font-semibold" : "hover:bg-[#222222]"
+                }`}
               >
-                {data}
+                <img src={getIcon(name)} alt={name} className="w-5 h-5" />
+                <div>{name}</div>
               </div>
-            </div>
+            </NavLink>
           );
         })}
       </div>

@@ -30,7 +30,7 @@ const Recents = () => {
           recentsResponseData?.recentNotes?.map((data) => (
             <NavLink key={data.id} to={`/folders/${data.folderId}/notes/${data.id}`}>
               <div
-                className={`w-full p-2 h-10 px-4 flex flex-row gap-2 items-center ${
+                className={`w-full p-2 h-10 px-4 flex flex-row gap-2 items-center transition-all ${
                   noteId === data.id ? "bg-amber-800" : "hover:bg-[#222222]"
                 }`}
               >
