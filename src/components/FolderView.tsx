@@ -3,7 +3,7 @@ import { NavLink, useParams, useLocation } from "react-router-dom";
 import { useNetwork } from "../CustomHooks/useNetwork";
 
 const FolderView = () => {
-  const { folderId, noteId } = useParams();
+  const { folderId, noteId, more } = useParams();
   const location = useLocation();
   const [page, setPage] = useState(1);
   const [notes, setNotes] = useState([]);
@@ -26,22 +26,21 @@ const FolderView = () => {
       //only fetch the first page/first 10 notes when the page changes
     });
 
-    if (location.pathname.startsWith("/folders/favorites")) {
-      params.set("favourite", "true"); // Fetch favourite notes
-    } else if (location.pathname.startsWith("/folders/archived")) {
-      params.set("archived", "true"); // Fetch archived notes
-    } else if (location.pathname.startsWith("/folders/trash")) {
-      params.set("deleted", "true"); // Fetch trashed notes
+    if (more === "favorites") {
+      params.set("favourite", "true");
+    } else if (more === "archived") {
+      params.set("archived", "true");
+    } else if (more === "trash") {
+      params.set("deleted", "true");
     } else if (folderId) {
-      params.set("folderId", folderId === "undefined" ? "" : folderId || "");
+      params.set("folderId", folderId || "");
     }
 
     getFolderContents(`/notes?${params.toString()}`, "GET", null);
 
     setNotes([]); //clear so taht previoys notes are emptied
-  }, [folderId]);
-// }, [folderId, location.pathname]);
-
+  }, [folderId, more]);
+  // }, [folderId, location.pathname]);
 
   // Fetch more notes when page changes
   useEffect(() => {
@@ -57,14 +56,14 @@ const FolderView = () => {
       //only fetch the first page/first 10 notes when the page changes
     });
 
-    if (location.pathname.startsWith("/folders/favorites")) {
-      params.set("favourite", "true"); // Fetch favourite notes
-    } else if (location.pathname.startsWith("/folders/archived")) {
-      params.set("archived", "true"); // Fetch archived notes
-    } else if (location.pathname.startsWith("/folders/trash")) {
-      params.set("deleted", "true"); // Fetch trashed notes
+    if (more === "favorites") {
+      params.set("favourite", "true");
+    } else if (more === "archived") {
+      params.set("archived", "true");
+    } else if (more === "trash") {
+      params.set("deleted", "true");
     } else if (folderId) {
-      params.set("folderId", folderId === "undefined" ? "" : folderId || "");
+      params.set("folderId", folderId || "");
     }
 
     getFolderContents(`/notes?${params.toString()}`, "GET", null);
@@ -85,16 +84,14 @@ const FolderView = () => {
     <div className="flex flex-col bg-[#1c1c1c] w-150 gap-8 py-15">
       <h2 className="text-2xl px-4">
         {folderLoading
-          ? "Loading Folder..."
-          : location.pathname.startsWith("/folders/favorites")
+          ? "Loading..."
+          : more === "favorites"
           ? "Favourite Notes"
-          : location.pathname.startsWith("/folders/archived")
+          : more === "archived"
           ? "Archived Notes"
-          : location.pathname.startsWith("/folders/trash")
-          ? "Trashed notes"
-          : folderContents?.notes[0]?.folder?.name
-          ? folderContents.notes[0].folder.name
-          : "No Data"}
+          : more === "trash"
+          ? "Trashed Notes"
+          : folderContents?.notes[0]?.folder?.name || "No Data"}
       </h2>
 
       <div className="flex flex-col gap-4 overflow-y-scroll px-4">
@@ -123,7 +120,9 @@ const FolderView = () => {
               >
                 <div
                   className={`flex flex-col gap-2 p-2 transition-all ${
-                    data.id === noteId ? "bg-[#333333]" : "bg-[#222222] hover:bg-[#282828]"
+                    data.id === noteId
+                      ? "bg-[#333333]"
+                      : "bg-[#222222] hover:bg-[#292929]"
                   }  rounded`}
                 >
                   <div className="text-xl">{data.title}</div>

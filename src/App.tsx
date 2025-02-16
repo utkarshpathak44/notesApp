@@ -19,9 +19,13 @@ function App() {
             path="folders/:folderId/notes/:noteId"
             element={<Container />}
           />
+{/*           
           <Route path="/trash" element={<Container />} />
           <Route path="/archived" element={<Container />} />
-          <Route path="/favorites" element={<Container />} />
+          <Route path="/favorites" element={<Container />} /> */}
+
+          <Route path="/:more" element={<Container />} />
+          <Route path="/:more/:noteId" element={<Container />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </ToastProvider>

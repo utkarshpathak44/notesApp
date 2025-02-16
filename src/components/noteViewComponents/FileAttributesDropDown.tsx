@@ -45,7 +45,7 @@ const FileAttributesDropDown = ({
       </div>
       <hr className="border-[#444444] my-3" />
       <div
-        className="flex h-15 flex-row gap-4 items-center px-8 hover:bg-[#7f4242]"
+        className="flex h-15 flex-row gap-4 items-center px-8 hover:bg-amber-700 cursor-pointer"
         onClick={() => {
           sendNote(`/notes/${noteId}`, "DELETE", {});
           setIsDeleted(true);
