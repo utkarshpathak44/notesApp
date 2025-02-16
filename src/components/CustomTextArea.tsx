@@ -52,7 +52,7 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
   return (
     <textarea
       placeholder="Enter contents here..."
-      className="w-full h-full text-l leading-relaxed focus:outline-none resize-none bg-[#181818]"
+      className="w-full h-full text-l leading-relaxed focus:outline-none resize-none bg-brand-900"
       value={noteData.content}
       onChange={handleTextWrapper}
       onClick={hideAllOptions}

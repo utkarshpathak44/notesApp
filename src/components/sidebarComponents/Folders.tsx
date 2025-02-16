@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useNetwork } from "../../CustomHooks/useNetwork";
 import { useToast } from "../../contexts/CustomToast";
 
@@ -7,12 +7,16 @@ import addFolderIcon from "../../assets/addFolder.svg";
 import currentFolderIcon from "../../assets/currentFolder.svg";
 import otherFolderIcon from "../../assets/otherFolder.svg";
 import trashIcon from "../../assets/trashLp.svg";
+import restore from "../../assets/restore.svg";
+import trashLight from "../../assets/Trash.svg";
+
 
 import RecentsShimmer from "./RecentsShimmer";
 
 const Folders = () => {
   const showToast = useToast();
   const { folderId, noteId } = useParams();
+  const navigate = useNavigate();
 
   const {
     data: foldersResponseData,
@@ -25,14 +29,15 @@ const Folders = () => {
   const [addState, setAddState] = useState(true);
   const [editingFolderId, setEditingFolderId] = useState(null);
   const [editedFolderName, setEditedFolderName] = useState("");
+  const [deleted, setDeleted] = useState<string | null>("");
 
   const { fetchData: CreateFolder } = useNetwork();
   const { fetchData: UpdateFolder } = useNetwork();
-  const { fetchData: DeleteFolder } = useNetwork();
+  // const { fetchData: DeleteFolder } = useNetwork();
 
   const handleCreateFolder = async () => {
     await CreateFolder("/folders", "POST", { name: newFolder });
-    fetchFolders("/folders", "GET", {});
+    await fetchFolders("/folders", "GET", {});
     setAddState(true);
     setNewFolder("");
     showToast(`Folder "${newFolder}" created`);
@@ -41,15 +46,24 @@ const Folders = () => {
   const handleRenameFolder = async (id) => {
     if (!editedFolderName.trim()) return;
     await UpdateFolder(`/folders/${id}`, "PATCH", { name: editedFolderName });
-    fetchFolders("/folders", "GET", {});
+    await fetchFolders("/folders", "GET", {});
     setEditingFolderId(null);
     showToast("Folder renamed");
   };
 
   const handleDeleteFolder = async (id) => {
     await UpdateFolder(`/folders/${id}`, "DELETE", {});
-    fetchFolders("/folders", "GET", {});
+    await fetchFolders("/folders", "GET", {});
+    setDeleted(id);
     showToast("Folder deleted");
+    navigate("/");
+  };
+
+  const handleRestoreFolder = async (id) => {
+    await UpdateFolder(`/folders/${deleted}/restore`, "POST", {});
+    await fetchFolders("/folders", "GET", {});
+    setDeleted(null);
+    showToast("folder restored");
   };
 
   useEffect(() => {
@@ -69,6 +83,15 @@ const Folders = () => {
           className="cursor-pointer"
         />
       </div>
+      {deleted ? (
+        <div className="w-full p-2 px-4 flex flex-row bg-amber-700 justify-between gap-2 py-2 cursor-pointer"
+        onClick={handleRestoreFolder}>
+          <div>Restore deleted folder?</div>
+          <img src={restore} alt="" />
+        </div>
+      ) : (
+        <></>
+      )}
 
       {!addState && !foldersLoading && (
         <div className="w-full p-2 px-4 flex flex-row bg-[#242424] gap-2 py-2">
@@ -133,7 +156,7 @@ const Folders = () => {
                   >
                     <div>{data.name}</div>
                     <img
-                      src={trashIcon}
+                      src={folderId === data.id?trashLight:trashIcon}
                       className="w-4"
                       alt=""
                       onClick={(e) => handleDeleteFolder(data.id)}

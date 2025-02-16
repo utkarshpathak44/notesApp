@@ -1,21 +1,20 @@
-import type { Config } from "tailwindcss";
 
-const config: Config = {
+const config = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      fontFamily: {
-        utk: "var(--font-utk)",
-      },
       colors: {
-        regalBlue: "var(--color-regal-blue)",
-        avocado: {
-          100: "var(--color-avocado-100)",
-          200: "var(--color-avocado-200)",
-          300: "var(--color-avocado-300)",
-          400: "var(--color-avocado-400)",
-          500: "var(--color-avocado-500)",
-          600: "var(--color-avocado-600)",
+        brand: {
+          50: "#181818", // Deep black
+          100: "#222222", // Slightly lighter than black
+          200: "#242424", // Soft dark tone
+          300: "#292929", // Main background or primary color
+          400: "#333333", // Slightly lighter background
+          500: "#444444", // UI accents
+          600: "#555555", // Hover highlights
+          700: "#666666", // Muted text or borders
+          800: "#999999", // Lighter text color
+          900: "#AAAAAA" 
         },
       },
     },

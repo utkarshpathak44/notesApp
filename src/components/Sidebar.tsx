@@ -28,7 +28,7 @@ const SideBar = () => {
   // useEffect(() => {});
 
   return (
-    <div className="flex flex-col h-full w-135 bg-[#181818] gap-4">
+    <div className="flex flex-col h-full w-135 bg-[#181818]  gap-4">
       <div className="flex flex-col gap-4  p-5">
         <div className="flex flex-row  justify-between h-10">
           <img src={logo} alt="notwed" />
