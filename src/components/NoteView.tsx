@@ -9,11 +9,13 @@ import { NoteViewShimmer } from "./NoteViewShimmer";
 import FileAttributesDropDown from "./noteViewComponents/FileAttributesDropDown";
 import ChangeFolderDropDown from "./noteViewComponents/ChangeFolderDropDown";
 import Restore from "./Restore";
+import { useData } from "../contexts/DataContext";
 
 import calenderIcon from "../assets/calender.svg";
 import folderIcon from "../assets/otherFolder.svg";
 
 const NoteView = () => {
+  const { toggle } = useData();
   const [noteData, setNoteData] = useState({
     folderId: "",
     title: "",
@@ -73,7 +75,7 @@ const NoteView = () => {
     setNoteOptions(false);
   }, [noteId]);
 
-  // Update state when noteResponseData is received
+  // Update state when noteData is received
   useEffect(() => {
     if (loadingNote) return;
 
@@ -129,6 +131,7 @@ const NoteView = () => {
       console.log("Sending note data:", updatedNote);
 
       await sendNote(endpoint, method, updatedNote);
+      if (noteId === "newnote") toggle();
 
       showToast("File saved");
 

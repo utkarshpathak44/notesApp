@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { NavLink, useParams, useLocation } from "react-router-dom";
 import { useNetwork } from "../CustomHooks/useNetwork";
+import { useData } from "../contexts/DataContext";
 
 const FolderView = () => {
   const { folderId, noteId, more } = useParams();
-  const location = useLocation();
+  // const location = useLocation();
+  const { value } = useData();
+
   const [page, setPage] = useState(1);
   const [notes, setNotes] = useState([]);
   const {
@@ -35,12 +38,12 @@ const FolderView = () => {
     } else if (folderId) {
       params.set("folderId", folderId || "");
     }
-    if(folderId=="undefined")return
+    if (folderId == "undefined") return;
 
     getFolderContents(`/notes?${params.toString()}`, "GET", null);
 
     setNotes([]); //clear so taht previoys notes are emptied
-  }, [folderId, more]);
+  }, [folderId, more,value]);
   // }, [folderId, location.pathname]);
 
   // Fetch more notes when page changes
@@ -117,7 +120,9 @@ const FolderView = () => {
           : notes.map((data) => (
               <NavLink
                 key={data.id}
-                to={`${more?`/${more}/`:`/folders/${data.folderId}/notes/`}${data.id}`}
+                to={`${
+                  more ? `/${more}/` : `/folders/${data.folderId}/notes/`
+                }${data.id}`}
               >
                 <div
                   className={`flex flex-col gap-2 p-2 transition-all ${

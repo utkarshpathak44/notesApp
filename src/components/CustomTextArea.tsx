@@ -1,46 +1,56 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 interface CustomTextAreaProps {
   noteData: any;
   setAndNotifyData: () => void;
   setNoteData: any;
-  hideAllOptions: any
+  hideAllOptions: any;
 }
 
 const CustomTextArea: React.FC<CustomTextAreaProps> = ({
   noteData,
   setAndNotifyData,
   setNoteData,
-  hideAllOptions
+  hideAllOptions,
 }) => {
   const [debouncedContent, setDebouncedContent] = useState(noteData.content);
+  const { noteId } = useParams();
 
-  // Handle text input
   const handleTextWrapper = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newContent = e.target.value;
     setNoteData((prev: any) => ({
       ...prev,
       content: newContent,
     }));
-    setDebouncedContent(newContent);
   };
 
-  // Debounce effect: Save after 1 second of no typing
+  // Update debouncedContent only when noteData.content changes
+  useEffect(() => {
+    setDebouncedContent(noteData.content);
+    console.log("setting debounced value")
+  }, [noteData.content]);
+
   useEffect(() => {
     const handler = setTimeout(() => {
-      if (debouncedContent !== noteData.content) {
+      
+      if (noteId !== "newnote" && debouncedContent == noteData.content) {
+        console.log(noteId);
+        console.log("autosaving");
         setAndNotifyData();
       }
-    }, 1000); // Wait 1 second before saving
+    }, 2000);
 
-    return () => clearTimeout(handler);
-  }, [debouncedContent]);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [noteData.content, debouncedContent]);
 
-  // Ctrl + S shortcut to save
   useEffect(() => {
     const handleSaveShortcut = (event: KeyboardEvent) => {
       if (event.ctrlKey && event.key === "s") {
         event.preventDefault();
+        console.log("manually saving")
         setAndNotifyData();
       }
     };

@@ -23,7 +23,7 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useBoolean = () => {
+export const useData = () => {
   const context = useContext(DataContext);
   if (!context) {
     throw new Error("error");

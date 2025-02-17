@@ -30,7 +30,7 @@ const Folders = () => {
   const [editingFolderId, setEditingFolderId] = useState(null);
   const [editedFolderName, setEditedFolderName] = useState("");
   const [deleted, setDeleted] = useState<string | null>("");
-  const [refetch, setRefetch]=useState<boolean>(true)
+  const [ShimmerOnce, setShimmerOnce]=useState<boolean>(true)
 
   const { fetchData: CreateFolder } = useNetwork();
   const { fetchData: UpdateFolder } = useNetwork();
@@ -38,7 +38,7 @@ const Folders = () => {
 
   // useEffect(()=>{
   //   if(!foldersLoading)return;
-  //   setRefetch(true)
+  //   setShimmerOnce(true)
   // },[foldersLoading])
 
   const handleCreateFolder = async () => {
@@ -73,7 +73,7 @@ const Folders = () => {
   };
 
   useEffect(() => {
-    fetchFolders("/folders", "GET", {}).then(() => setRefetch(false));
+    fetchFolders("/folders", "GET", {}).then(() => setShimmerOnce(false));
   }, []);
 
   if (foldersError) return <div>Error loading folders.</div>;
@@ -117,7 +117,7 @@ const Folders = () => {
       )}
 
       <div className="overflow-y-scroll h-70">
-        {refetch ? (
+        {ShimmerOnce ? (
           <>
             <RecentsShimmer />
             <RecentsShimmer />
