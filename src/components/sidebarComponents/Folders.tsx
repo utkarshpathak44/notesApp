@@ -1,7 +1,8 @@
-import { useDebugValue, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useNetwork } from "../../CustomHooks/useNetwork";
 import { useToast } from "../../contexts/CustomToast";
+import { useData } from "../../contexts/DataContext";
 
 import addFolderIcon from "../../assets/addFolder.svg";
 import currentFolderIcon from "../../assets/currentFolder.svg";
@@ -10,13 +11,13 @@ import trashIcon from "../../assets/trashLp.svg";
 import restore from "../../assets/restore.svg";
 import trashLight from "../../assets/Trash.svg";
 
-
 import RecentsShimmer from "./RecentsShimmer";
 
 const Folders = () => {
-  const showToast:any = useToast();
+  const showToast: any = useToast();
   const { folderId, noteId } = useParams();
   const navigate = useNavigate();
+  const { setCurrentFolder } = useData();
 
   const {
     data: foldersResponseData,
@@ -30,7 +31,7 @@ const Folders = () => {
   const [editingFolderId, setEditingFolderId] = useState(null);
   const [editedFolderName, setEditedFolderName] = useState("");
   const [deleted, setDeleted] = useState<string | null>("");
-  const [ShimmerOnce, setShimmerOnce]=useState<boolean>(true)
+  const [ShimmerOnce, setShimmerOnce] = useState<boolean>(true);
 
   const { fetchData: CreateFolder } = useNetwork();
   const { fetchData: UpdateFolder } = useNetwork();
@@ -90,8 +91,10 @@ const Folders = () => {
         />
       </div>
       {deleted ? (
-        <div className="w-full p-2 px-4 flex flex-row bg-amber-700 justify-between gap-2 py-2 cursor-pointer font-semibold"
-        onClick={handleRestoreFolder}>
+        <div
+          className="w-full p-2 px-4 flex flex-row bg-amber-700 justify-between gap-2 py-2 cursor-pointer font-semibold"
+          onClick={handleRestoreFolder}
+        >
           <div>Restore deleted folder?</div>
           <img src={restore} alt="" />
         </div>
@@ -160,9 +163,17 @@ const Folders = () => {
                         : "text-[#999999] flex flex-row justify-between w-full"
                     }
                   >
-                    <NavLink key={data.id} to={`/folders/${data.id}`} className=" w-60 h-full">{data.name}</NavLink>
+                    <NavLink
+                      key={data.id}
+                      to={`/folders/${data.id}`}
+                      className=" w-60 h-full"
+                      onClick={() => setCurrentFolder(data.name)}
+                    >
+                      {data.name}
+                    </NavLink>
                     <img
-                      src={folderId === data.id?trashLight:trashIcon}
+                      src={folderId === data.id ? trashLight : trashIcon}
+                      //i want to store the current folder name in the setCurrent folder contaxt here
                       className="w-4 cursor-pointer"
                       alt=""
                       onClick={(e) => handleDeleteFolder(data.id)}

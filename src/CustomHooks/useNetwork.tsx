@@ -26,6 +26,8 @@ export const useNetwork =<T=any> () => {
     try {
       const response:AxiosResponse<T> = await AxiosApi({ method, url, data });
       setState({ data: response.data, loading: false, error: null });
+      //for getting the id of the newely created node
+      return response.data
     } catch (error) {
       const axiosError = error as AxiosError;
 

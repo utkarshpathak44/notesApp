@@ -6,7 +6,7 @@ import { useData } from "../contexts/DataContext";
 const FolderView = () => {
   const { folderId, noteId, more } = useParams();
   // const location = useLocation();
-  const { value } = useData();
+  const { value,currentFolder } = useData();
 
   const [page, setPage] = useState(1);
   const [notes, setNotes] = useState([]);
@@ -21,9 +21,9 @@ const FolderView = () => {
     setPage(1);
     const params = new URLSearchParams({
       // folderId: folderId === "undefined" ? "" : folderId || "",
-      archived: "false",
-      favorite: "false",
-      deleted: "false",
+      archived: "",
+      favorite: "",
+      deleted: "",
       page: "1",
       limit: "10",
       //only fetch the first page/first 10 notes when the page changes
@@ -95,7 +95,7 @@ const FolderView = () => {
           ? "Archived Notes"
           : more === "trash"
           ? "Trashed Notes"
-          : folderContents?.notes[0]?.folder?.name || "No Data"}
+          : currentFolder|| "No Data"}
       </h2>
 
       <div className="flex flex-col gap-4 overflow-y-scroll px-4">
