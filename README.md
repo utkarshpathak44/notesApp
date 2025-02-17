@@ -23,6 +23,7 @@
 - [x] **Implement a feature when the note is saved the recents and folderView Components are rerendered without Shimmer**
 - [x] **More Folders path dosent change when the note is opened**
 - [x] **Autosave functional**
+- [x] **Search functionality added**
 - [ ] **folder name** if the folder dosent have any nots, then we cant find the name of the folder to display on the top of the component
 - [ ] **When a new note is created, automatically redirect to it's link** High Priority, but not sure how to do it!!
 - [ ] **Search Notes** 
