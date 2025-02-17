@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Recents from "./sidebarComponents/Recents";
 import Folders from "./sidebarComponents/Folders";
 import More from "./sidebarComponents/More";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useParams, useNavigate } from "react-router-dom";
 
 // import search from '.src/assets/search.svg';
 // import { useNavigate } from "react-router-dom";
@@ -22,16 +22,17 @@ const folders = ["Personal", "Work", "Finances", "Travel", "Events"];
 
 const SideBar = () => {
   const [search, setSearch] = useState(false);
+  const navigate = useNavigate();
   // const [EnterNewNode, setEnterNewNode] = useState(false);
   const { folderId, noteId } = useParams();
 
   // useEffect(() => {});
 
   return (
-    <div className="flex flex-col h-full w-135 bg-[#181818]  gap-4">
-      <div className="flex flex-col gap-4  p-5">
+    <aside className="flex flex-col h-full w-135 bg-[#181818]  gap-4">
+      <header className="flex flex-col gap-4  p-5">
         <div className="flex flex-row  justify-between h-10">
-          <img src={logo} alt="notwed" />
+          <div onClick={() => navigate("/")} className="cursor-pointer"><img src={logo} alt="notwed" /></div>
           <img
             src={search ? closeIcon : searchIcon}
             alt="search"
@@ -53,19 +54,22 @@ const SideBar = () => {
               />
             </div>
           ) : (
-            <NavLink className="flex flex-row w-full items-center" to={`/folders/${folderId}/notes/newnote`}>
-              <button className="flex flex-row w-full items-center bg-[#242424] justify-center py-2 gap-1 hover:bg-[#292929]">
+            <NavLink
+              className="flex flex-row w-full items-center"
+              to={`/folders/${folderId}/notes/newnote`}
+            >
+              <button className="flex flex-row w-full items-center bg-[#242424] justify-center py-2 gap-1 hover:bg-[#292929] cursor-pointer">
                 <img src={addIcon} alt="" />
                 <div className="font-semibold">New Note</div>
               </button>
             </NavLink>
           )}
         </div>
-      </div>
+      </header>
       <Recents />
       <Folders />
       <More />
-    </div>
+    </aside>
   );
 };
 export default SideBar;

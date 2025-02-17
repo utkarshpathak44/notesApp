@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { NavLink, useParams, useLocation } from "react-router-dom";
 import { useNetwork } from "../CustomHooks/useNetwork";
+import { useData } from "../contexts/DataContext";
 
 const FolderView = () => {
   const { folderId, noteId, more } = useParams();
-  const location = useLocation();
+  // const location = useLocation();
+  const { value } = useData();
+
   const [page, setPage] = useState(1);
   const [notes, setNotes] = useState([]);
   const {
@@ -19,7 +22,7 @@ const FolderView = () => {
     const params = new URLSearchParams({
       // folderId: folderId === "undefined" ? "" : folderId || "",
       archived: "false",
-      favourite: "false",
+      favorite: "false",
       deleted: "false",
       page: "1",
       limit: "10",
@@ -27,7 +30,7 @@ const FolderView = () => {
     });
 
     if (more === "favorites") {
-      params.set("favourite", "true");
+      params.set("favorite", "true");
     } else if (more === "archived") {
       params.set("archived", "true");
     } else if (more === "trash") {
@@ -35,11 +38,12 @@ const FolderView = () => {
     } else if (folderId) {
       params.set("folderId", folderId || "");
     }
+    if (folderId == "undefined") return;
 
     getFolderContents(`/notes?${params.toString()}`, "GET", null);
 
     setNotes([]); //clear so taht previoys notes are emptied
-  }, [folderId, more]);
+  }, [folderId, more,value]);
   // }, [folderId, location.pathname]);
 
   // Fetch more notes when page changes
@@ -49,7 +53,7 @@ const FolderView = () => {
     const params = new URLSearchParams({
       // folderId: folderId === "undefined" ? "" : folderId || "",
       archived: "false",
-      favourite: "false",
+      favorite: "false",
       deleted: "false",
       page: page.toString(),
       limit: "10",
@@ -57,7 +61,7 @@ const FolderView = () => {
     });
 
     if (more === "favorites") {
-      params.set("favourite", "true");
+      params.set("favorite", "true");
     } else if (more === "archived") {
       params.set("archived", "true");
     } else if (more === "trash") {
@@ -86,7 +90,7 @@ const FolderView = () => {
         {folderLoading
           ? "Loading..."
           : more === "favorites"
-          ? "Favourite Notes"
+          ? "Favorite Notes"
           : more === "archived"
           ? "Archived Notes"
           : more === "trash"
@@ -116,7 +120,9 @@ const FolderView = () => {
           : notes.map((data) => (
               <NavLink
                 key={data.id}
-                to={`/folders/${data.folderId}/notes/${data.id}`}
+                to={`${
+                  more ? `/${more}/` : `/folders/${data.folderId}/notes/`
+                }${data.id}`}
               >
                 <div
                   className={`flex flex-col gap-2 p-2 transition-all ${

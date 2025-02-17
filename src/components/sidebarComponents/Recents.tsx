@@ -1,12 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import noteIcon from "../../assets/note.svg";
 import noteDarkerIcon from "../../assets/noteDarker.svg";
 import { useNetwork } from "../../CustomHooks/useNetwork";
 import { NavLink, useParams } from "react-router-dom";
 import RecentsShimmer from "./RecentsShimmer";
+import { useData } from "../../contexts/DataContext";
 
 const Recents = () => {
   const { folderId, noteId } = useParams();
+  const { value } = useData();
+  const [ShimmerOnce, setShimmerOnce]=useState<boolean>(true)
+  
 
   const {
     data: recentsResponseData,
@@ -16,28 +20,37 @@ const Recents = () => {
   } = useNetwork();
 
   useEffect(() => {
-    fetchRecents("/notes/recent", "GET", {});
-  }, []);
+    fetchRecents("/notes/recent", "GET", {}).then(() => setShimmerOnce(false));
+  }, [value]);
 
   if (recentsError) return <div>Error loading Recents.</div>;
-
 
   return (
     <div className="flex flex-col gap-2">
       <div className="px-5 text-[#999999]">Recents</div>
       <div>
-        {recentsLoading ? <RecentsShimmer/> : (
+        {ShimmerOnce ? (
+          <RecentsShimmer />
+        ) : (
           recentsResponseData?.recentNotes?.map((data) => (
-            <NavLink key={data.id} to={`/folders/${data.folderId}/notes/${data.id}`}>
+            <NavLink
+              key={data.id}
+              to={`/folders/${data.folderId}/notes/${data.id}`}
+            >
               <div
                 className={`w-full p-2 h-10 px-4 flex flex-row gap-2 items-center transition-all ${
                   noteId === data.id ? "bg-amber-800" : "hover:bg-[#222222]"
                 }`}
               >
-                <img src={noteId === data.id ? noteIcon : noteDarkerIcon} alt="" />
+                <img
+                  src={noteId === data.id ? noteIcon : noteDarkerIcon}
+                  alt=""
+                />
                 <div
                   className={
-                    noteId === data.id ? "text-white font-semibold" : "text-[#999999]"
+                    noteId === data.id
+                      ? "text-white font-semibold"
+                      : "text-[#999999]"
                   }
                 >
                   {data.title}
