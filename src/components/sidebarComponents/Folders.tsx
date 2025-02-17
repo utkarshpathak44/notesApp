@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useDebugValue, useEffect, useState } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useNetwork } from "../../CustomHooks/useNetwork";
 import { useToast } from "../../contexts/CustomToast";
@@ -14,7 +14,7 @@ import trashLight from "../../assets/Trash.svg";
 import RecentsShimmer from "./RecentsShimmer";
 
 const Folders = () => {
-  const showToast = useToast();
+  const showToast:any = useToast();
   const { folderId, noteId } = useParams();
   const navigate = useNavigate();
 
@@ -30,10 +30,16 @@ const Folders = () => {
   const [editingFolderId, setEditingFolderId] = useState(null);
   const [editedFolderName, setEditedFolderName] = useState("");
   const [deleted, setDeleted] = useState<string | null>("");
+  const [refetch, setRefetch]=useState<boolean>(true)
 
   const { fetchData: CreateFolder } = useNetwork();
   const { fetchData: UpdateFolder } = useNetwork();
   // const { fetchData: DeleteFolder } = useNetwork();
+
+  // useEffect(()=>{
+  //   if(!foldersLoading)return;
+  //   setRefetch(true)
+  // },[foldersLoading])
 
   const handleCreateFolder = async () => {
     await CreateFolder("/folders", "POST", { name: newFolder });
@@ -67,7 +73,7 @@ const Folders = () => {
   };
 
   useEffect(() => {
-    fetchFolders("/folders", "GET", {});
+    fetchFolders("/folders", "GET", {}).then(() => setRefetch(false));
   }, []);
 
   if (foldersError) return <div>Error loading folders.</div>;
@@ -84,7 +90,7 @@ const Folders = () => {
         />
       </div>
       {deleted ? (
-        <div className="w-full p-2 px-4 flex flex-row bg-amber-700 justify-between gap-2 py-2 cursor-pointer"
+        <div className="w-full p-2 px-4 flex flex-row bg-amber-700 justify-between gap-2 py-2 cursor-pointer font-semibold"
         onClick={handleRestoreFolder}>
           <div>Restore deleted folder?</div>
           <img src={restore} alt="" />
@@ -111,14 +117,14 @@ const Folders = () => {
       )}
 
       <div className="overflow-y-scroll h-70">
-        {foldersLoading ? (
+        {refetch ? (
           <>
             <RecentsShimmer />
             <RecentsShimmer />
           </>
         ) : (
           foldersResponseData?.folders?.map((data) => (
-            <NavLink key={data.id} to={`/folders/${data.id}`}>
+            <div key={data.id}>
               <div
                 className={`w-full p-2 px-4 flex flex-row gap-2 transition-all ${
                   folderId === data.id ? "bg-[#333333]" : "hover:bg-[#222222]"
@@ -154,17 +160,17 @@ const Folders = () => {
                         : "text-[#999999] flex flex-row justify-between w-full"
                     }
                   >
-                    <div>{data.name}</div>
+                    <NavLink key={data.id} to={`/folders/${data.id}`} className=" w-60 h-full">{data.name}</NavLink>
                     <img
                       src={folderId === data.id?trashLight:trashIcon}
-                      className="w-4"
+                      className="w-4 cursor-pointer"
                       alt=""
                       onClick={(e) => handleDeleteFolder(data.id)}
                     />
                   </div>
                 )}
               </div>
-            </NavLink>
+            </div>
           ))
         )}
       </div>

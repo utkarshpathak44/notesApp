@@ -7,6 +7,7 @@ import {
 import { ToastProvider } from "./contexts/CustomToast";
 import Container from "./components/Container";
 import { PageNotFound } from "./components/PageNotFound";
+import { BooleanProvider } from "./contexts/DataContext";
 
 function App() {
   return (
@@ -19,11 +20,6 @@ function App() {
             path="folders/:folderId/notes/:noteId"
             element={<Container />}
           />
-{/*           
-          <Route path="/trash" element={<Container />} />
-          <Route path="/archived" element={<Container />} />
-          <Route path="/favorites" element={<Container />} /> */}
-
           <Route path="/:more" element={<Container />} />
           <Route path="/:more/:noteId" element={<Container />} />
           <Route path="*" element={<PageNotFound />} />

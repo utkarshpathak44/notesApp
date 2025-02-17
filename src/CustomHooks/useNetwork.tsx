@@ -1,29 +1,36 @@
 import { useState } from "react";
-import axios from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
+interface NetworkState<T> {
+  data?: T;
+  loading: boolean;
+  error: AxiosError | null;
+}
 
-export const useNetwork = () => {
+export const useNetwork =<T=any> () => {
   const AxiosApi = axios.create({
-    baseURL:'https://nowted-server.remotestate.com'
-})
-  const [state, setState] = useState<{
-    data?: any;
-    loading: boolean;
-    error: any;
-  }>({
-    data: null,
+    baseURL: "https://nowted-server.remotestate.com",
+  });
+  const [state, setState] = useState<NetworkState<T>>({
+    data: undefined,
     loading: false,
     error: null,
   });
 
-  const fetchData = async (url: string, method: string, data: any) => {
+  const fetchData = async (
+    url: string,
+    method: AxiosRequestConfig["method"],
+    data: any
+  ) => {
     setState((prev) => ({ ...prev, loading: true, error: null }));
     try {
-      const response = await AxiosApi({ method, url, data });
+      const response:AxiosResponse<T> = await AxiosApi({ method, url, data });
       setState({ data: response.data, loading: false, error: null });
     } catch (error) {
+      const axiosError = error as AxiosError;
+
       console.error("Axios error:", error);
-      setState((prev) => ({ ...prev, loading: false, error }));
+      setState((prev) => ({ ...prev, loading: false, error:axiosError }));
     }
   };
 

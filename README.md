@@ -20,6 +20,7 @@
 - [x] **Fix the FolderView component not displaying correct name of favourites, archived and trash**
 - [x] **Changing notes' Attributes**
 - [x] **Folder Deletion and restore**
+- [ ] **Implement a feature when the note is saved the recents and folderView Components are rerendered without Shimmer**
 - [ ] **When a new note is created, automatically redirect to it's link** High Priority, but not sure how to do it!!
 - [ ] **Search Notes** 
 - [ ] **Open only the certain folder when / is opened** Easy, just hard code the note
