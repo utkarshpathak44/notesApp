@@ -9,6 +9,8 @@
 
 @theme{
   --default-font-family: "Source Sans 3", "sans-sarif"
+  --default-font-family: "Source Sans 3", "sans-sarif";
+  --color-mint-500: oklch(0.72 0.11 178);
 }
 
 

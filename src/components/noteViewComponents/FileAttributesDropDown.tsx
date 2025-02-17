@@ -1,6 +1,8 @@
 import trashIcon from "../../assets/Trash.svg";
 import archivedIcon from "../../assets/Archived.svg";
 import favouritesIcon from "../../assets/Favourites.svg";
+import { useData } from "../../contexts/DataContext";
+
 
 const FileAttributesDropDown = ({
   noteId,
@@ -11,6 +13,7 @@ const FileAttributesDropDown = ({
   setAndNotifyData,
   setIsDeleted,
 }) => {
+  const {toggle}=useData()
   return (
     <div className="absolute top-0 right-0 px-0 py-4 bg-[#242424] w-80 text-xl rounded-xl flex-col gap-2 ">
       <div
@@ -49,6 +52,7 @@ const FileAttributesDropDown = ({
         onClick={() => {
           sendNote(`/notes/${noteId}`, "DELETE", {});
           setIsDeleted(true);
+          toggle()
         }}
       >
         <img src={trashIcon} alt="" className="w-6 h-6" />

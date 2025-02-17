@@ -6,7 +6,7 @@ const Restore = ({RestoreNote}) => {
   return (
     <div className="w-full h-full flex flex-col justify-center items-center gap-4">
       <img src={restoreHuge} alt=""  className="w-20"/>
-      <h2 className="text-2xl font-semibold">Restore "{name}"</h2>
+      <h2 className="text-2xl font-semibold">Restore File"</h2>
       <p className="text-[#666666] w-125 text-center">
         Dont't wantto lose this note? It's not too late! Just click the 'Restore' button
         and it will be added back to the list. Its that Simple

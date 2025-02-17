@@ -10,19 +10,22 @@ import FileAttributesDropDown from "./noteViewComponents/FileAttributesDropDown"
 import ChangeFolderDropDown from "./noteViewComponents/ChangeFolderDropDown";
 import Restore from "./Restore";
 import { useData } from "../contexts/DataContext";
+import AutoSaveNotifier from "./noteViewComponents/AutoSaveNotifier";
 
 import calenderIcon from "../assets/calender.svg";
 import folderIcon from "../assets/otherFolder.svg";
 
+const InitialData = {
+  folderId: "",
+  title: "",
+  content: "",
+  isFavorite: false,
+  isArchived: false,
+};
+
 const NoteView = () => {
   const { toggle } = useData();
-  const [noteData, setNoteData] = useState({
-    folderId: "",
-    title: "",
-    content: "",
-    isFavorite: false,
-    isArchived: false,
-  });
+  const [noteData, setNoteData] = useState(InitialData);
 
   const showToast = useToast();
   const [turnOff, setTurnOff] = useState(true);
@@ -33,6 +36,7 @@ const NoteView = () => {
   const [showFolderChange, setShowFolderChange] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [isDeleted, setIsDeleted] = useState(false);
+  const [showSaved, setShowSaved] = useState(true);
 
   const hideAllOptions = () => {
     setShowFolderChange(false);
@@ -75,6 +79,10 @@ const NoteView = () => {
     setNoteOptions(false);
   }, [noteId]);
 
+  useEffect(()=>{
+    setIsDeleted(false)
+  },[noteId])
+
   // Update state when noteData is received
   useEffect(() => {
     if (loadingNote) return;
@@ -94,7 +102,7 @@ const NoteView = () => {
         isFavorite: noteResponseData.note.isFavorite,
         isArchived: noteResponseData.note.isArchived,
       }));
-      setFolderName(noteResponseData.note.folder.name);
+      setFolderName(noteResponseData.note.folder?.name);
     }
   }, [loadingNote, noteError, noteResponseData]);
 
@@ -111,10 +119,13 @@ const NoteView = () => {
   };
 
   useEffect(() => {
-    if (!saveTrigger) return;
+    //if (!saveTrigger) return;
 
     const saveData = async () => {
-      setTurnOff(false);
+      if (noteId !== "newnote") {
+        setTurnOff(false);
+      }
+      setShowSaved((p) => !p);
 
       const updatedNote = {
         folderId: noteData.folderId || folderId,
@@ -123,6 +134,7 @@ const NoteView = () => {
         isFavorite: noteData.isFavorite,
         isArchived: noteData.isArchived,
       };
+      if(noteData.title=="") return
 
       const method = noteId === "newnote" ? "POST" : "PATCH";
       const endpoint = noteId === "newnote" ? "/notes" : `/notes/${noteId}`;
@@ -130,16 +142,22 @@ const NoteView = () => {
       console.log(method);
       console.log("Sending note data:", updatedNote);
 
-      await sendNote(endpoint, method, updatedNote);
-      if (noteId === "newnote") toggle();
+      const sentdata=await sendNote(endpoint, method, updatedNote);
 
-      showToast("File saved");
-
-      if (updatedNote.folderId !== folderId) {
-        navigate(`/folders/${updatedNote.folderId}/notes/${noteId}`);
+      if (noteId === "newnote") {
+        toggle(); //used to reload the recent and folderView component
+        navigate(`/folders/${updatedNote.folderId}/notes/${sentdata.id}`)
       }
 
+      
+      if (updatedNote.folderId !== folderId) {
+        showToast("Note Created");
+        navigate(`/folders/${updatedNote.folderId}/notes/${noteId}`);
+      }
+      
+
       // setNoteData(prev=>)
+      console.log(sentNoteData)
 
       if (sendingNoteError) {
         console.error("Error saving note:", sendingNoteError);
@@ -170,9 +188,9 @@ const NoteView = () => {
   ) : (
     <main className="flex flex-col bg-[#181818] w-full h-full p-10 py-15">
       <div className="w-full flex flex-row justify-between text-4xl">
-        <div className="font-semibold">
+        <div className="font-semibold w-full">
           <textarea
-            className="focus:outline-none resize-none h-13"
+            className="focus:outline-none resize-none h-13 w-full"
             name=""
             id=""
             placeholder="Enter Title..."
@@ -255,7 +273,11 @@ const NoteView = () => {
         setNoteData={setNoteData}
         hideAllOptions={hideAllOptions}
       ></CustomTextArea>
-      <SavedToolTip turnOff={turnOff} />
+      {noteId === "newnote" ? (
+        <SavedToolTip turnOff={turnOff} />
+      ) : (
+        <AutoSaveNotifier showSaved={showSaved} />
+      )}
     </main>
   );
 };

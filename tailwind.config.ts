@@ -14,7 +14,7 @@ const config = {
           600: "#555555", // Hover highlights
           700: "#666666", // Muted text or borders
           800: "#999999", // Lighter text color
-          900: "#AAAAAA" 
+          900: "#AAAAAA"  // Light
         },
       },
     },
