@@ -9,8 +9,7 @@ import { useData } from "../../contexts/DataContext";
 const Recents = () => {
   const { noteId } = useParams();
   const { value } = useData();
-  const [ShimmerOnce, setShimmerOnce]=useState<boolean>(true)
-  
+  const [ShimmerOnce, setShimmerOnce] = useState<boolean>(true);
 
   const {
     data: recentsResponseData,
@@ -32,7 +31,7 @@ const Recents = () => {
         {ShimmerOnce ? (
           <RecentsShimmer />
         ) : (
-          recentsResponseData?.recentNotes?.map((data:any) => (
+          recentsResponseData?.recentNotes?.map((data: any) => (
             <NavLink
               key={data.id}
               to={`/folders/${data.folderId}/notes/${data.id}`}
@@ -53,7 +52,9 @@ const Recents = () => {
                       : "text-brand-800"
                   }
                 >
-                  {data.title}
+                  {data.title.length > 28
+                    ? data.title.slice(0, 28) + "..."
+                    : data.title}
                 </div>
               </div>
             </NavLink>

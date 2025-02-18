@@ -17,7 +17,7 @@ import { FoldersResponse } from "../../interfaces/ApiInterfaces";
 
 const Folders = () => {
   const showToast: any = useToast();
-  const { folderId} = useParams();
+  const { folderId } = useParams();
   const navigate = useNavigate();
   const { setCurrentFolder } = useData();
 
@@ -30,7 +30,7 @@ const Folders = () => {
 
   const [newFolder, setNewFolder] = useState("");
   const [addState, setAddState] = useState(true);
-  const [editingFolderId, setEditingFolderId] = useState<string|null>(null);
+  const [editingFolderId, setEditingFolderId] = useState<string | null>(null);
   const [editedFolderName, setEditedFolderName] = useState("");
   const [deleted, setDeleted] = useState<string | null>("");
   const [ShimmerOnce, setShimmerOnce] = useState<boolean>(true);
@@ -52,7 +52,7 @@ const Folders = () => {
     showToast(`Folder "${newFolder}" created`);
   };
 
-  const handleRenameFolder = async (id:string) => {
+  const handleRenameFolder = async (id: string) => {
     if (!editedFolderName.trim()) return;
     await UpdateFolder(`/folders/${id}`, "PATCH", { name: editedFolderName });
     await fetchFolders("/folders", "GET", {});
@@ -60,7 +60,7 @@ const Folders = () => {
     showToast("Folder renamed");
   };
 
-  const handleDeleteFolder = async (id:string) => {
+  const handleDeleteFolder = async (id: string) => {
     await UpdateFolder(`/folders/${id}`, "DELETE", {});
     await fetchFolders("/folders", "GET", {});
     setDeleted(id);
@@ -171,7 +171,9 @@ const Folders = () => {
                       className=" w-60 h-full"
                       onClick={() => setCurrentFolder(data.name)}
                     >
-                      {data.name}
+                      {data.name.length > 28
+                        ? data.name.slice(0, 28) + "..."
+                        : data.name}
                     </NavLink>
                     <img
                       src={folderId === data.id ? trashLight : trashIcon}

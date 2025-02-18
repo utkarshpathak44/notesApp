@@ -37,7 +37,7 @@ const SideBar = () => {
       <header className="flex flex-col gap-4  p-5">
         <div className="flex flex-row  justify-between h-10">
           <div onClick={() => navigate("/")} className="cursor-pointer">
-            <img src={logo} alt="notwed" />
+            <img src={logo} alt="notwed" className="filter invert"/>
           </div>
           <img
             src={search ? closeIcon : searchIcon}

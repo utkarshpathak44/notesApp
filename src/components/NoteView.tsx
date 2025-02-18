@@ -81,6 +81,7 @@ const NoteView = () => {
 
   useEffect(()=>{
     setIsDeleted(false)
+    // setNoteData(InitialData)
   },[noteId])
 
   // Update state when noteData is received
@@ -104,7 +105,7 @@ const NoteView = () => {
       }));
       setFolderName(noteResponseData.note.folder?.name);
     }
-  }, [loadingNote, noteError, noteResponseData,noteId]);
+  }, [loadingNote, noteError, noteResponseData]);
 
   useEffect(() => {
     console.log("Note response data:", noteResponseData);
