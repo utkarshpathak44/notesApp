@@ -1,12 +1,11 @@
-@import "tailwindcss";
+/* @import "tailwindcss";
 @tailwind utilities;
 
 @import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap");
 
-
-  :root {
-    --default-font-family: "Source Sans 3", "sans-serif";
-  }
+:root {
+  --default-font-family: "Source Sans 3", "sans-serif";
+}
 
 @theme {
   --default-font-family: "Source Sans 3", "sans-sarif";
@@ -24,4 +23,4 @@
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
   }
-}
+} */

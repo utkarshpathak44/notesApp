@@ -13,9 +13,11 @@ import trashLight from "../../assets/Trash.svg";
 
 import RecentsShimmer from "./RecentsShimmer";
 
+import { FoldersResponse } from "../../interfaces/ApiInterfaces";
+
 const Folders = () => {
   const showToast: any = useToast();
-  const { folderId, noteId } = useParams();
+  const { folderId } = useParams();
   const navigate = useNavigate();
   const { setCurrentFolder } = useData();
 
@@ -24,11 +26,11 @@ const Folders = () => {
     loading: foldersLoading,
     error: foldersError,
     fetchData: fetchFolders,
-  } = useNetwork();
+  } = useNetwork<FoldersResponse>();
 
   const [newFolder, setNewFolder] = useState("");
   const [addState, setAddState] = useState(true);
-  const [editingFolderId, setEditingFolderId] = useState(null);
+  const [editingFolderId, setEditingFolderId] = useState<string | null>(null);
   const [editedFolderName, setEditedFolderName] = useState("");
   const [deleted, setDeleted] = useState<string | null>("");
   const [ShimmerOnce, setShimmerOnce] = useState<boolean>(true);
@@ -50,7 +52,7 @@ const Folders = () => {
     showToast(`Folder "${newFolder}" created`);
   };
 
-  const handleRenameFolder = async (id) => {
+  const handleRenameFolder = async (id: string) => {
     if (!editedFolderName.trim()) return;
     await UpdateFolder(`/folders/${id}`, "PATCH", { name: editedFolderName });
     await fetchFolders("/folders", "GET", {});
@@ -58,7 +60,7 @@ const Folders = () => {
     showToast("Folder renamed");
   };
 
-  const handleDeleteFolder = async (id) => {
+  const handleDeleteFolder = async (id: string) => {
     await UpdateFolder(`/folders/${id}`, "DELETE", {});
     await fetchFolders("/folders", "GET", {});
     setDeleted(id);
@@ -66,7 +68,7 @@ const Folders = () => {
     navigate("/");
   };
 
-  const handleRestoreFolder = async (id) => {
+  const handleRestoreFolder = async () => {
     await UpdateFolder(`/folders/${deleted}/restore`, "POST", {});
     await fetchFolders("/folders", "GET", {});
     setDeleted(null);
@@ -82,7 +84,7 @@ const Folders = () => {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-row w-full px-5 justify-between">
-        <div className="text-[#999999]">Folders</div>
+        <div className="text-brand-800">Folders</div>
         <img
           src={addFolderIcon}
           alt="Add Folder"
@@ -103,7 +105,7 @@ const Folders = () => {
       )}
 
       {!addState && !foldersLoading && (
-        <div className="w-full p-2 px-4 flex flex-row bg-[#242424] gap-2 py-2">
+        <div className="w-full p-2 px-4 flex flex-row bg-brand-200 gap-2 py-2">
           <input
             type="text"
             placeholder="Type folder name..."
@@ -130,7 +132,7 @@ const Folders = () => {
             <div key={data.id}>
               <div
                 className={`w-full p-2 px-4 flex flex-row gap-2 transition-all ${
-                  folderId === data.id ? "bg-[#333333]" : "hover:bg-[#222222]"
+                  folderId === data.id ? "bg-brand-400" : "hover:bg-brand-100"
                 }`}
               >
                 <img
@@ -160,7 +162,7 @@ const Folders = () => {
                     className={
                       folderId === data.id
                         ? "text-white font-semibold flex flex-row justify-between w-full"
-                        : "text-[#999999] flex flex-row justify-between w-full"
+                        : "text-brand-800 flex flex-row justify-between w-full"
                     }
                   >
                     <NavLink
@@ -169,14 +171,16 @@ const Folders = () => {
                       className=" w-60 h-full"
                       onClick={() => setCurrentFolder(data.name)}
                     >
-                      {data.name}
+                      {data.name.length > 28
+                        ? data.name.slice(0, 28) + "..."
+                        : data.name}
                     </NavLink>
                     <img
                       src={folderId === data.id ? trashLight : trashIcon}
                       //i want to store the current folder name in the setCurrent folder contaxt here
                       className="w-4 cursor-pointer"
                       alt=""
-                      onClick={(e) => handleDeleteFolder(data.id)}
+                      onClick={() => handleDeleteFolder(data.id)}
                     />
                   </div>
                 )}

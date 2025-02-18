@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CustomTextArea from "./CustomTextArea";
 import { useToast } from "../contexts/CustomToast";
 import SavedToolTip from "./SavedToolTip";
@@ -28,15 +28,15 @@ const NoteView = () => {
   const [noteData, setNoteData] = useState(InitialData);
 
   const showToast = useToast();
-  const [turnOff, setTurnOff] = useState(true);
-  const { folderId, noteId } = useParams();
+  const { folderId, noteId, more } = useParams();
   const navigate = useNavigate();
-  const [noteOptions, setNoteOptions] = useState(false);
-  const [saveTrigger, setSaveTrigger] = useState(false);
-  const [showFolderChange, setShowFolderChange] = useState(false);
-  const [folderName, setFolderName] = useState("");
-  const [isDeleted, setIsDeleted] = useState(false);
-  const [showSaved, setShowSaved] = useState(true);
+  const [noteOptions, setNoteOptions] = useState<boolean>(false);
+  const [saveTrigger, setSaveTrigger] = useState<boolean>(false);
+  const [showFolderChange, setShowFolderChange] = useState<boolean>(false);
+  const [folderName, setFolderName] = useState<string>("");
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [showSaved, setShowSaved] = useState<boolean>(true);
+  const isFirstRender = useRef(true);
 
   const hideAllOptions = () => {
     setShowFolderChange(false);
@@ -54,7 +54,7 @@ const NoteView = () => {
   // Save note data
   const {
     data: sentNoteData,
-    loading: sendingNote,
+    // loading: sendingNote,
     error: sendingNoteError,
     fetchData: sendNote,
   } = useNetwork();
@@ -79,9 +79,10 @@ const NoteView = () => {
     setNoteOptions(false);
   }, [noteId]);
 
-  useEffect(()=>{
-    setIsDeleted(false)
-  },[noteId])
+  useEffect(() => {
+    setIsDeleted(false);
+    // setNoteData(InitialData)
+  }, [noteId]);
 
   // Update state when noteData is received
   useEffect(() => {
@@ -119,12 +120,12 @@ const NoteView = () => {
   };
 
   useEffect(() => {
-    //if (!saveTrigger) return;
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
 
     const saveData = async () => {
-      if (noteId !== "newnote") {
-        setTurnOff(false);
-      }
       setShowSaved((p) => !p);
 
       const updatedNote = {
@@ -134,7 +135,7 @@ const NoteView = () => {
         isFavorite: noteData.isFavorite,
         isArchived: noteData.isArchived,
       };
-      if(noteData.title=="") return
+      if (noteData.title == "") return;
 
       const method = noteId === "newnote" ? "POST" : "PATCH";
       const endpoint = noteId === "newnote" ? "/notes" : `/notes/${noteId}`;
@@ -142,22 +143,22 @@ const NoteView = () => {
       console.log(method);
       console.log("Sending note data:", updatedNote);
 
-      const sentdata=await sendNote(endpoint, method, updatedNote);
+      const sentdata = await sendNote(endpoint, method, updatedNote);
 
       if (noteId === "newnote") {
         toggle(); //used to reload the recent and folderView component
-        navigate(`/folders/${updatedNote.folderId}/notes/${sentdata.id}`)
-      }
-
-      
-      if (updatedNote.folderId !== folderId) {
+        showToast("Note Created")
+        navigate(`/folders/${updatedNote.folderId}/notes/${sentdata.id}`);
+      } else if (more != undefined) {
+        //pass
+        // navigate(`/${more}/notes/${noteId}`);
+        // toggle();
+      } else if (updatedNote.folderId !== folderId) {
         showToast("Note Created");
         navigate(`/folders/${updatedNote.folderId}/notes/${noteId}`);
+      } else {
       }
-      
-
-      // setNoteData(prev=>)
-      console.log(sentNoteData)
+      console.log(sentNoteData);
 
       if (sendingNoteError) {
         console.error("Error saving note:", sendingNoteError);
@@ -167,9 +168,21 @@ const NoteView = () => {
     saveData();
   }, [saveTrigger]);
 
-  if (noteId === undefined)
+  if (!loadingNote && more == "trash" && noteId !== undefined)
     return (
-      <div className="flex flex-col bg-[#181818] w-full h-full p-10 py-15 gap-8">
+      <Restore
+        RestoreNote={() => {
+          //this function restores the node
+          sendNote(`/notes/${noteId}/restore`, "POST", {});
+          setIsDeleted(false);
+          showToast("Note Restored");
+        }}
+      />
+    );
+
+  if (noteId === undefined||noteResponseData?.note?.deletedAt!=null)
+    return (
+      <div className="flex flex-col bg-brand-50 w-full h-full p-10 py-15 gap-8">
         <NoOpen />
       </div>
     );
@@ -186,7 +199,7 @@ const NoteView = () => {
       }}
     />
   ) : (
-    <main className="flex flex-col bg-[#181818] w-full h-full p-10 py-15">
+    <main className="flex flex-col bg-brand-50 w-full h-full p-10 py-15">
       <div className="w-full flex flex-row justify-between text-4xl">
         <div className="font-semibold w-full">
           <textarea
@@ -207,7 +220,7 @@ const NoteView = () => {
           <></>
         ) : (
           <div
-            className="flex border-2 border-stone-400 rounded-4xl w-9 h-9 items-center justify-center gap-1 hover:bg-[#292929]"
+            className="flex border-2 border-stone-400 rounded-4xl w-9 h-9 items-center justify-center gap-1 hover:bg-brand-300"
             onClick={() => setNoteOptions((p) => !p)}
           >
             <div className="bg-stone-400 rounded-4xl w-1 h-1"></div>
@@ -221,7 +234,6 @@ const NoteView = () => {
           <FileAttributesDropDown
             noteId={noteId}
             noteData={noteData}
-            folderId={folderId}
             setNoteData={setNoteData}
             sendNote={sendNote}
             setAndNotifyData={setAndNotifyData}
@@ -230,34 +242,31 @@ const NoteView = () => {
         ) : (
           <></>
         )}
-        <div className="flex flex-row gap-5">
+        <div className="flex flex-row gap-5 items-center">
           <div>
             <img src={calenderIcon} alt="Calendar" />
           </div>
-          <div className="text-[#999999]">Date</div>
+          <div className="text-brand-800">Date</div>
           <time className="ml-10">
-            {" "}
             {new Date(
               noteResponseData?.note.createdAt || new Date()
             ).toLocaleDateString("en-GB")}
           </time>
         </div>
-        <hr className="border-[#292929]" />
-        <div className="flex flex-row gap-5">
+        <hr className="border-brand-300" />
+        <div className="flex flex-row gap-5 items-center">
           <div>
             <img src={folderIcon} alt="Folder" />
           </div>
           <div
-            className="text-[#999999]"
+            className="text-brand-800"
             onClick={() => setShowFolderChange((p) => !p)}
           >
-            <div className=" hover:bg-[#444444] cursor-pointer transition-all">
-              folder
+            <div className=" hover:bg-brand-500 cursor-pointer transition-all">
+              Folder
             </div>
             {showFolderChange && (
               <ChangeFolderDropDown
-                showFolder={showFolderChange}
-                setShowFolder={setShowFolderChange}
                 setNoteData={setNoteData}
                 setAndNotifyData={setAndNotifyData}
                 setFolderName={setFolderName}
@@ -274,7 +283,7 @@ const NoteView = () => {
         hideAllOptions={hideAllOptions}
       ></CustomTextArea>
       {noteId === "newnote" ? (
-        <SavedToolTip turnOff={turnOff} />
+        <SavedToolTip />
       ) : (
         <AutoSaveNotifier showSaved={showSaved} />
       )}
