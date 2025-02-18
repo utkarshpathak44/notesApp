@@ -26,7 +26,7 @@ const ChangeFolderDropDown = ({
   }, []);
 
   return (
-    <div className="absolute top-10 w-70 left-0 bg-[#222222] p-4 rounded-xl shadow-lg z-50">
+    <div className="absolute top-10 w-70 left-0 bg-brand-100 p-4 rounded-xl shadow-lg z-50">
       <h3 className="text-white mb-2">Move to</h3>
 
       {isLoading ? (
@@ -36,7 +36,7 @@ const ChangeFolderDropDown = ({
           {foldersData?.folders?.map((folder) => (
             <li
               key={folder.id}
-              className="cursor-pointer p-2 hover:bg-[#333333] rounded"
+              className="cursor-pointer p-2 hover:bg-brand-400 rounded"
               onClick={() => {
                 setNoteData((prev:any) => ({
                   ...prev,

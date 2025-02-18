@@ -1,7 +1,6 @@
 const RecentsShimmer = () => {
   return (
     <div className="flex flex-col gap-2">
-      {/* <div className="px-5 text-[#999999]">Recents</div> */}
       <div>
         {Array.from({ length: 3 }).map((_, index) => {
           return (

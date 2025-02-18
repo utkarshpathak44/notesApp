@@ -11,9 +11,10 @@ import addIcon from "../assets/add.svg";
 import { useNetwork } from "../CustomHooks/useNetwork";
 
 const SideBar = () => {
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(1);
+  // const [page, setPage] = useState(1);
+  // const [limit, setLimit] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
 
   const [search, setSearch] = useState(false);
   const navigate = useNavigate();
@@ -23,21 +24,36 @@ const SideBar = () => {
   const {
     data: searchResponseData,
     loading: loadingSearch,
-    error: searchError,
+    // error: searchError,
     fetchData: fetchNote,
   } = useNetwork();
 
   useEffect(() => {
-    fetchNote("notes?page=1&limit=10&search=" + searchQuery, "GET", {});
+    const handler = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 1000);
+  
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchQuery]); 
+  
+  useEffect(() => {
+    // if (!debouncedSearchQuery) return; 
+    fetchNote(`notes?page=1&limit=100&search=${debouncedSearchQuery}`, "GET", {});
     console.log(searchResponseData);
-  }, [searchQuery]);
+  }, [debouncedSearchQuery]);
 
   return (
     <aside className="flex flex-col h-full w-135 bg-brand-50  gap-4">
       <header className="flex flex-col gap-4  p-5">
         <div className="flex flex-row  justify-between h-10">
           <div onClick={() => navigate("/")} className="cursor-pointer">
-            <img src={logo} alt="notwed" className="filter invert"/>
+            <img
+              src={logo}
+              alt="notwed"
+              className="filter grayscale brightness-75"
+            />
           </div>
           <img
             src={search ? closeIcon : searchIcon}
@@ -70,7 +86,7 @@ const SideBar = () => {
               searchResponseData?.notes?.length > 0 &&
               searchQuery != "" ? (
                 <div className="absolute left-0 top-full pt-2 w-full h-200 bg-brand-100 text-white shadow-lg max-h-60 overflow-y-scroll z-10">
-                  {searchResponseData?.notes.map((note) => (
+                  {searchResponseData?.notes.map((note: any) => (
                     <NavLink
                       key={note.id}
                       to={`/folders/${note.folderId}/notes/${note.id}`}

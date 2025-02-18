@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useParams, useLocation } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { useNetwork } from "../CustomHooks/useNetwork";
 import { useData } from "../contexts/DataContext";
 
@@ -13,7 +13,7 @@ const FolderView = () => {
   const {
     data: folderContents,
     loading: folderLoading,
-    error: folderError,
+    // error: folderError,
     fetchData: getFolderContents,
   } = useNetwork();
 
@@ -117,7 +117,7 @@ const FolderView = () => {
                 </div>
               </div>
             ))
-          : notes.map((data) => (
+          : notes.map((data:any) => (
               <NavLink
                 key={data.id}
                 to={`${
@@ -127,8 +127,8 @@ const FolderView = () => {
                 <div
                   className={`flex flex-col gap-2 p-2 transition-all ${
                     data.id === noteId
-                      ? "bg-brand-400"
-                      : "bg-brand-100 hover:bg-brand-300"
+                      ? "bg-brand-500"
+                      : "bg-brand-300 hover:bg-brand-400"
                   }  rounded`}
                 >
                   <div className="text-xl">{data.title}</div>
