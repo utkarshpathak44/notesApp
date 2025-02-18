@@ -4,21 +4,16 @@ interface DataContextType {
   value: boolean;
   toggle: () => void;
   currentFolder: string;
-  setCurrentFolder: () => void;
-
-  //   setTrue: () => void;
-  //   setFalse: () => void;
+  setCurrentFolder: (folderName: string) => void; // Fixed type here
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const DataProvider = ({ children }: { children: ReactNode }) => {
-  const [value, setValue] = useState(false);
-  const [currentFolder, setCurrentFolder] = useState("");
+  const [value, setValue] = useState<boolean>(false);
+  const [currentFolder, setCurrentFolder] = useState<string>("");
 
   const toggle = () => setValue((prev) => !prev);
-  //   const setTrue = () => setValue(true);
-  //   const setFalse = () => setValue(false);
 
   return (
     <DataContext.Provider
@@ -32,7 +27,7 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
 export const useData = () => {
   const context = useContext(DataContext);
   if (!context) {
-    throw new Error("error");
+    throw new Error("err");
   }
   return context;
 };

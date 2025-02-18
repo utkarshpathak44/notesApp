@@ -33,7 +33,7 @@ const SideBar = () => {
   }, [searchQuery]);
 
   return (
-    <aside className="flex flex-col h-full w-135 bg-[#181818]  gap-4">
+    <aside className="flex flex-col h-full w-135 bg-brand-50  gap-4">
       <header className="flex flex-col gap-4  p-5">
         <div className="flex flex-row  justify-between h-10">
           <div onClick={() => navigate("/")} className="cursor-pointer">
@@ -51,7 +51,7 @@ const SideBar = () => {
         </div>
         <div className="flex flex-row ">
           {search ? (
-            <div className="flex relative flex-row w-full items-center bg-[#242424] px-2 gap-2 py-2">
+            <div className="flex relative flex-row w-full items-center bg-brand-200 px-2 gap-2 py-2">
               <img src={searchIcon} alt="" />
               <input
                 value={searchQuery}
@@ -69,12 +69,12 @@ const SideBar = () => {
               {!loadingSearch &&
               searchResponseData?.notes?.length > 0 &&
               searchQuery != "" ? (
-                <div className="absolute left-0 top-full pt-2 w-full h-200 bg-[#222222] text-white shadow-lg max-h-60 overflow-y-scroll z-10">
+                <div className="absolute left-0 top-full pt-2 w-full h-200 bg-brand-100 text-white shadow-lg max-h-60 overflow-y-scroll z-10">
                   {searchResponseData?.notes.map((note) => (
                     <NavLink
                       key={note.id}
                       to={`/folders/${note.folderId}/notes/${note.id}`}
-                      className="block hover:bg-[#555555] p-2"
+                      className="block hover:bg-brand-600 p-2"
                     >
                       <div className="w-full">{note.title}</div>
                     </NavLink>
@@ -89,7 +89,7 @@ const SideBar = () => {
               className="flex flex-row w-full items-center"
               to={`/folders/${folderId}/notes/newnote`}
             >
-              <button className="flex flex-row w-full items-center bg-[#242424] justify-center py-2 gap-1 hover:bg-[#292929] cursor-pointer">
+              <button className="flex flex-row w-full items-center bg-brand-200 justify-center py-2 gap-1 hover:bg-brand-300 cursor-pointer">
                 <img src={addIcon} alt="" />
                 <div className="font-semibold">New Note</div>
               </button>

@@ -1,18 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNetwork } from "../../CustomHooks/useNetwork";
 
+import { FoldersResponse,NoteDataInterface } from "../../interfaces/ApiInterfaces";
+
+
+interface ChangeFolderDropDownProps {
+  setNoteData: (noteData:  NoteDataInterface|any) => void;  // Function that accepts note data
+  setAndNotifyData: () => void;  // Function that accepts any type of data and doesn't return anything
+  setFolderName: (folderName: string) => void;  // Function that accepts a string (folder name)
+}
+
 const ChangeFolderDropDown = ({
-  showFolder,
-  setShowFolder,
   setNoteData,
   setAndNotifyData,
   setFolderName
-}) => {
+}:ChangeFolderDropDownProps) => {
   const {
     data: foldersData,
     loading: isLoading,
     fetchData: getFolders,
-  } = useNetwork();
+  } = useNetwork<FoldersResponse>();
 
   useEffect(() => {
     getFolders("/folders", "GET", null);
@@ -30,8 +37,8 @@ const ChangeFolderDropDown = ({
             <li
               key={folder.id}
               className="cursor-pointer p-2 hover:bg-[#333333] rounded"
-              onClick={(e) => {
-                setNoteData((prev) => ({
+              onClick={() => {
+                setNoteData((prev:any) => ({
                   ...prev,
                   folderId: folder.id
                 }));

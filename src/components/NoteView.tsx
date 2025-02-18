@@ -28,15 +28,15 @@ const NoteView = () => {
   const [noteData, setNoteData] = useState(InitialData);
 
   const showToast = useToast();
-  const [turnOff, setTurnOff] = useState(true);
+  const [turnOff, setTurnOff] = useState<boolean>(true);
   const { folderId, noteId } = useParams();
   const navigate = useNavigate();
-  const [noteOptions, setNoteOptions] = useState(false);
-  const [saveTrigger, setSaveTrigger] = useState(false);
-  const [showFolderChange, setShowFolderChange] = useState(false);
-  const [folderName, setFolderName] = useState("");
-  const [isDeleted, setIsDeleted] = useState(false);
-  const [showSaved, setShowSaved] = useState(true);
+  const [noteOptions, setNoteOptions] = useState<boolean>(false);
+  const [saveTrigger, setSaveTrigger] = useState<boolean>(false);
+  const [showFolderChange, setShowFolderChange] = useState<boolean>(false);
+  const [folderName, setFolderName] = useState<string>("");
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [showSaved, setShowSaved] = useState<boolean>(true);
 
   const hideAllOptions = () => {
     setShowFolderChange(false);
@@ -54,7 +54,7 @@ const NoteView = () => {
   // Save note data
   const {
     data: sentNoteData,
-    loading: sendingNote,
+    // loading: sendingNote,
     error: sendingNoteError,
     fetchData: sendNote,
   } = useNetwork();
@@ -104,7 +104,7 @@ const NoteView = () => {
       }));
       setFolderName(noteResponseData.note.folder?.name);
     }
-  }, [loadingNote, noteError, noteResponseData]);
+  }, [loadingNote, noteError, noteResponseData,noteId]);
 
   useEffect(() => {
     console.log("Note response data:", noteResponseData);
@@ -169,7 +169,7 @@ const NoteView = () => {
 
   if (noteId === undefined)
     return (
-      <div className="flex flex-col bg-[#181818] w-full h-full p-10 py-15 gap-8">
+      <div className="flex flex-col bg-brand-50 w-full h-full p-10 py-15 gap-8">
         <NoOpen />
       </div>
     );
@@ -186,7 +186,7 @@ const NoteView = () => {
       }}
     />
   ) : (
-    <main className="flex flex-col bg-[#181818] w-full h-full p-10 py-15">
+    <main className="flex flex-col bg-brand-50 w-full h-full p-10 py-15">
       <div className="w-full flex flex-row justify-between text-4xl">
         <div className="font-semibold w-full">
           <textarea
@@ -207,7 +207,7 @@ const NoteView = () => {
           <></>
         ) : (
           <div
-            className="flex border-2 border-stone-400 rounded-4xl w-9 h-9 items-center justify-center gap-1 hover:bg-[#292929]"
+            className="flex border-2 border-stone-400 rounded-4xl w-9 h-9 items-center justify-center gap-1 hover:bg-brand-300"
             onClick={() => setNoteOptions((p) => !p)}
           >
             <div className="bg-stone-400 rounded-4xl w-1 h-1"></div>
@@ -221,7 +221,6 @@ const NoteView = () => {
           <FileAttributesDropDown
             noteId={noteId}
             noteData={noteData}
-            folderId={folderId}
             setNoteData={setNoteData}
             sendNote={sendNote}
             setAndNotifyData={setAndNotifyData}
@@ -234,7 +233,7 @@ const NoteView = () => {
           <div>
             <img src={calenderIcon} alt="Calendar" />
           </div>
-          <div className="text-[#999999]">Date</div>
+          <div className="text-brand-800">Date</div>
           <time className="ml-10">
             {" "}
             {new Date(
@@ -242,22 +241,20 @@ const NoteView = () => {
             ).toLocaleDateString("en-GB")}
           </time>
         </div>
-        <hr className="border-[#292929]" />
+        <hr className="border-brand-300" />
         <div className="flex flex-row gap-5">
           <div>
             <img src={folderIcon} alt="Folder" />
           </div>
           <div
-            className="text-[#999999]"
+            className="text-brand-800"
             onClick={() => setShowFolderChange((p) => !p)}
           >
-            <div className=" hover:bg-[#444444] cursor-pointer transition-all">
+            <div className=" hover:bg-brand-500 cursor-pointer transition-all">
               folder
             </div>
             {showFolderChange && (
               <ChangeFolderDropDown
-                showFolder={showFolderChange}
-                setShowFolder={setShowFolderChange}
                 setNoteData={setNoteData}
                 setAndNotifyData={setAndNotifyData}
                 setFolderName={setFolderName}
