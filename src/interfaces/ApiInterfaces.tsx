@@ -8,6 +8,16 @@ export interface Folder {
 
 export interface FoldersResponseInterface {
   folders: Folder[];
+  length:number|undefined
+}
+
+export interface noteResponseData {
+  notes: NoteInterface[];
+  total:number
+}
+
+export interface RecentsResponseData {
+  recentNotes: NoteInterface[];
 }
 
 export interface NoteDataInterface {
@@ -23,11 +33,12 @@ export interface NoteInterface {
   id: string;
   folderId: string;
   title: string;
+  content: string
   isFavorite: boolean;
   isArchived: boolean;
   createdAt: string;
   updatedAt: string;
-  deletedAt: string;
+  deletedAt?: string;
   preview: string;
   folder: Folder;
 }

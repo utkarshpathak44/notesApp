@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useNetwork } from "../CustomHooks/useNetwork";
 import { useData } from "../contexts/DataContext";
-import { NoteInterface } from "../interfaces/ApiInterfaces";
+import { NoteInterface, noteResponseData } from "../interfaces/ApiInterfaces";
 
 const FolderView = () => {
   const { folderId, noteId, more } = useParams();
@@ -10,13 +10,13 @@ const FolderView = () => {
   const { value,currentFolder } = useData();
 
   const [page, setPage] = useState(1);
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState<NoteInterface[]|[]>([]);
   const {
     data: folderContents,
     loading: folderLoading,
     // error: folderError,
     fetchData: getFolderContents,
-  } = useNetwork();
+  } = useNetwork<noteResponseData>();
 
   useEffect(() => {
     setPage(1);
@@ -145,7 +145,7 @@ const FolderView = () => {
               </NavLink>
             ))}
 
-        {page * 10 <= folderContents?.total && (
+        {page * 10 <= (folderContents?.total ?? 0) && (
           <button
             className="p-2 bg-brand-300 text-white rounded cursor-pointer hover:bg-brand-400"
             onClick={() => setPage((prev) => prev + 1)}

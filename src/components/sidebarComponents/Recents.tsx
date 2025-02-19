@@ -5,7 +5,7 @@ import { useNetwork } from "../../CustomHooks/useNetwork";
 import { NavLink, useParams } from "react-router-dom";
 import RecentsShimmer from "./RecentsShimmer";
 import { useData } from "../../contexts/DataContext";
-import { NoteInterface } from "../../interfaces/ApiInterfaces";
+import { NoteInterface, RecentsResponseData } from "../../interfaces/ApiInterfaces";
 
 const Recents = () => {
   const { noteId } = useParams();
@@ -17,7 +17,7 @@ const Recents = () => {
     // loading: recentsLoading,
     error: recentsError,
     fetchData: fetchRecents,
-  } = useNetwork();
+  } = useNetwork<RecentsResponseData>();
 
   useEffect(() => {
     fetchRecents("/notes/recent", "GET", {}).then(() => setShimmerOnce(false));
