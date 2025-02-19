@@ -79,6 +79,19 @@ const Folders = () => {
     fetchFolders("/folders", "GET", {}).then(() => setShimmerOnce(false));
   }, []);
 
+  useEffect(() => {
+    if (!foldersResponseData?.folders) return;
+    
+    const selectedFolder = foldersResponseData.folders.find(
+      (folder) => folder.id === folderId
+    );
+  
+    if (selectedFolder) {
+      setCurrentFolder(selectedFolder.name);
+    }
+  }, [folderId, foldersResponseData]);
+
+
   if (foldersError) return <div>Error loading folders.</div>;
 
   return (
@@ -169,7 +182,7 @@ const Folders = () => {
                       key={data.id}
                       to={`/folders/${data.id}`}
                       className=" w-60 h-full"
-                      onClick={() => setCurrentFolder(data.name)}
+                      // onClick={() => setCurrentFolder(data.name)}
                     >
                       {data.name.length > 28
                         ? data.name.slice(0, 28) + "..."
