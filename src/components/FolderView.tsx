@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useNetwork } from "../CustomHooks/useNetwork";
 import { useData } from "../contexts/DataContext";
+import { NoteInterface } from "../interfaces/ApiInterfaces";
 
 const FolderView = () => {
   const { folderId, noteId, more } = useParams();
@@ -40,7 +41,7 @@ const FolderView = () => {
     }
     if (folderId == "undefined") return;
 
-    getFolderContents(`/notes?${params.toString()}`, "GET", null);
+    getFolderContents(`/notes?${params.toString()}`, "GET", {});
 
     setNotes([]); //clear so taht previoys notes are emptied
   }, [folderId, more,value]);
@@ -70,7 +71,7 @@ const FolderView = () => {
       params.set("folderId", folderId || "");
     }
 
-    getFolderContents(`/notes?${params.toString()}`, "GET", null);
+    getFolderContents(`/notes?${params.toString()}`, "GET", {});
   }, [page]);
 
   // Append new notes when folderContents updates
@@ -117,7 +118,7 @@ const FolderView = () => {
                 </div>
               </div>
             ))
-          : notes.map((data:any) => (
+          : notes.map((data:NoteInterface) => (
               <NavLink
                 key={data.id}
                 to={`${

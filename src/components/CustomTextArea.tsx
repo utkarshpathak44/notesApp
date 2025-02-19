@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { NoteDataInterface } from "../interfaces/ApiInterfaces";
 
 interface CustomTextAreaProps {
-  noteData: any;
+  noteData: NoteDataInterface;
   setAndNotifyData: () => void;
-  setNoteData: any;
-  hideAllOptions: any;
+  setNoteData: React.Dispatch<React.SetStateAction<NoteDataInterface>>
+  hideAllOptions: ()=>void;
 }
 
 const CustomTextArea: React.FC<CustomTextAreaProps> = ({
@@ -19,7 +20,7 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
 
   const handleTextWrapper = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newContent = e.target.value;
-    setNoteData((prev: any) => ({
+    setNoteData((prev) => ({
       ...prev,
       content: newContent,
     }));

@@ -14,6 +14,7 @@ import AutoSaveNotifier from "./noteViewComponents/AutoSaveNotifier";
 
 import calenderIcon from "../assets/calender.svg";
 import folderIcon from "../assets/otherFolder.svg";
+import { NoteDataInterface } from "../interfaces/ApiInterfaces";
 
 const InitialData = {
   folderId: "",
@@ -25,7 +26,7 @@ const InitialData = {
 
 const NoteView = () => {
   const { toggle } = useData();
-  const [noteData, setNoteData] = useState(InitialData);
+  const [noteData, setNoteData] = useState<NoteDataInterface>(InitialData);
 
   const showToast = useToast();
   const { folderId, noteId, more } = useParams();
@@ -128,7 +129,7 @@ const NoteView = () => {
     const saveData = async () => {
       setShowSaved((p) => !p);
 
-      const updatedNote = {
+      const updatedNote:NoteDataInterface = {
         folderId: noteData.folderId || folderId,
         title: noteData.title,
         content: noteData.content,

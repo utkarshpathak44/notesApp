@@ -13,10 +13,10 @@ import trashLight from "../../assets/Trash.svg";
 
 import RecentsShimmer from "./RecentsShimmer";
 
-import { FoldersResponse } from "../../interfaces/ApiInterfaces";
+import { FoldersResponseInterface } from "../../interfaces/ApiInterfaces";
 
 const Folders = () => {
-  const showToast: any = useToast();
+  const showToast = useToast();
   const { folderId } = useParams();
   const navigate = useNavigate();
   const { setCurrentFolder } = useData();
@@ -26,7 +26,7 @@ const Folders = () => {
     loading: foldersLoading,
     error: foldersError,
     fetchData: fetchFolders,
-  } = useNetwork<FoldersResponse>();
+  } = useNetwork<FoldersResponseInterface>();
 
   const [newFolder, setNewFolder] = useState("");
   const [addState, setAddState] = useState(true);

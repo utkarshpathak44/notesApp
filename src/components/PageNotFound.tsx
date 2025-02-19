@@ -1,7 +1,7 @@
 import gif from "../assets/notFound.gif";
 import { useNavigate } from "react-router-dom";
 // import SideBar from "./SideBar";
-import jpg from "../assets/notDound2.jpg";
+// import jpg from "../assets/notDound2.jpg";
 
 export const PageNotFound = () => {
   const navigate = useNavigate();

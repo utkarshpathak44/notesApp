@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { FoldersResponseInterface, NoteDataInterface } from "../interfaces/ApiInterfaces";
 
 interface NetworkState<T> {
   data?: T;
@@ -20,7 +21,7 @@ export const useNetwork =<T=any> () => {
   const fetchData = async (
     url: string,
     method: AxiosRequestConfig["method"],
-    data: any
+    data?: NoteDataInterface|FoldersResponseInterface|{}
   ) => {
     setState((prev) => ({ ...prev, loading: true, error: null }));
     try {
