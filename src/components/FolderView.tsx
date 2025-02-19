@@ -95,7 +95,7 @@ const FolderView = () => {
           ? "Archived Notes"
           : more === "trash"
           ? "Trashed Notes"
-          : currentFolder|| "No Data"}
+          : currentFolder|| "Recent Files"}
       </h2>
 
       <div className="flex flex-col gap-4 overflow-y-scroll px-4">
@@ -103,7 +103,7 @@ const FolderView = () => {
           ? Array.from({ length: 9 }).map((_, index) => (
               <div
                 key={index}
-                className="flex flex-col gap-3 p-3 bg-brand-100 rounded animate-pulse h-18"
+                className="flex flex-col gap-3 p-3 bg-brand-300 rounded animate-pulse h-18"
               >
                 <div
                   className={`h-4 bg-brand-400 animate-pulse rounded`}
@@ -144,10 +144,9 @@ const FolderView = () => {
               </NavLink>
             ))}
 
-        {/* Load More Button */}
         {page * 10 <= folderContents?.total && (
           <button
-            className="p-2 bg-brand-100 text-white rounded cursor-pointer hover:bg-brand-400"
+            className="p-2 bg-brand-300 text-white rounded cursor-pointer hover:bg-brand-400"
             onClick={() => setPage((prev) => prev + 1)}
           >
             Load More

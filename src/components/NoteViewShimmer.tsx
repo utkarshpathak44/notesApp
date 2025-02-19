@@ -22,7 +22,6 @@ export const NoteViewShimmer = () => {
       <div className="w-full h-full text-l resize-none bg-brand-50 rounded mb-5 flex flex-col gap-1">
         {[...Array(Math.floor(Math.random() * 3) + 3)].map((_, index) => (
           <div key={index} className="flex flex-col gap-1">
-            {/* Inner mapped divs */}
             {[...Array(Math.floor(Math.random() * 2) + 2)].map(
               (_, subIndex) => (
                 <div
@@ -32,7 +31,6 @@ export const NoteViewShimmer = () => {
               )
             )}
 
-            {/* Random width div */}
             <div
               className="h-5 bg-brand-100 animate-pulse-fast rounded-md"
               style={{

@@ -1,5 +1,5 @@
 # NotesApp
-## Features
+## Targets
 
 - [x] **UI** 
 - [x] **Calling api to display Recents, Folders** 
