@@ -14,6 +14,7 @@ import AutoSaveNotifier from "./noteViewComponents/AutoSaveNotifier";
 
 import calenderIcon from "../assets/calender.svg";
 import folderIcon from "../assets/otherFolder.svg";
+import { NoteDataInterface, NoteInterface } from "../interfaces/ApiInterfaces";
 
 const InitialData = {
   folderId: "",
@@ -25,7 +26,7 @@ const InitialData = {
 
 const NoteView = () => {
   const { toggle } = useData();
-  const [noteData, setNoteData] = useState(InitialData);
+  const [noteData, setNoteData] = useState<NoteDataInterface>(InitialData);
 
   const showToast = useToast();
   const { folderId, noteId, more } = useParams();
@@ -49,7 +50,7 @@ const NoteView = () => {
     loading: loadingNote,
     error: noteError,
     fetchData: fetchNote,
-  } = useNetwork();
+  } = useNetwork<{note:NoteInterface}>();
 
   // Save note data
   const {
@@ -57,7 +58,7 @@ const NoteView = () => {
     // loading: sendingNote,
     error: sendingNoteError,
     fetchData: sendNote,
-  } = useNetwork();
+  } = useNetwork<{ id: string }>();
 
   // Fetch the note when noteId changes
   useEffect(() => {
@@ -128,7 +129,7 @@ const NoteView = () => {
     const saveData = async () => {
       setShowSaved((p) => !p);
 
-      const updatedNote = {
+      const updatedNote:NoteDataInterface = {
         folderId: noteData.folderId || folderId,
         title: noteData.title,
         content: noteData.content,
@@ -148,7 +149,7 @@ const NoteView = () => {
       if (noteId === "newnote") {
         toggle(); //used to reload the recent and folderView component
         showToast("Note Created")
-        navigate(`/folders/${updatedNote.folderId}/notes/${sentdata.id}`);
+        navigate(`/folders/${updatedNote.folderId}/notes/${sentdata?.id}`);
       } else if (more != undefined) {
         //pass
         // navigate(`/${more}/notes/${noteId}`);

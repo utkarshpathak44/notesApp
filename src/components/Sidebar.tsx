@@ -9,6 +9,8 @@ import searchIcon from "../assets/search.svg";
 import closeIcon from "../assets/close.svg";
 import addIcon from "../assets/add.svg";
 import { useNetwork } from "../CustomHooks/useNetwork";
+import { NoteInterface, noteResponseData } from "../interfaces/ApiInterfaces";
+
 
 const SideBar = () => {
   // const [page, setPage] = useState(1);
@@ -26,7 +28,7 @@ const SideBar = () => {
     loading: loadingSearch,
     // error: searchError,
     fetchData: fetchNote,
-  } = useNetwork();
+  } = useNetwork<noteResponseData>();
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -52,7 +54,7 @@ const SideBar = () => {
             <img
               src={logo}
               alt="notwed"
-              className="filter grayscale brightness-75"
+              // className="filter grayscale brightness-75"
             />
           </div>
           <img
@@ -83,10 +85,10 @@ const SideBar = () => {
                 onClick={() => setSearchQuery("")}
               />
               {!loadingSearch &&
-              searchResponseData?.notes?.length > 0 &&
+              (searchResponseData?.notes?? []).length > 0 &&
               searchQuery != "" ? (
                 <div className="absolute left-0 top-full pt-2 w-full h-200 bg-brand-100 text-white shadow-lg max-h-60 overflow-y-scroll z-10">
-                  {searchResponseData?.notes.map((note: any) => (
+                  {searchResponseData?.notes.map((note: NoteInterface) => (
                     <NavLink
                       key={note.id}
                       to={`/folders/${note.folderId}/notes/${note.id}`}

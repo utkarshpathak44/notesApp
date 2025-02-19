@@ -4,7 +4,7 @@ import NoteView from "./NoteView";
 
 const Container:React.FC=()=>{
     return(
-        <div className="flex flex-row w-screen h-screen bg-[#222222] text-white font-sans">
+        <div className="flex flex-row w-screen h-screen bg-brand-100 text-white font-sans">
             <SideBar/>
             <FolderView/>
             <NoteView/>

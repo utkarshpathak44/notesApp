@@ -2,7 +2,6 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  useParams,
 } from "react-router-dom";
 import { ToastProvider } from "./contexts/CustomToast";
 import Container from "./components/Container";
