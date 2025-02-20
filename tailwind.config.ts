@@ -1,21 +1,22 @@
-
 const config = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  darkMode: "class", // Enables dark mode based on a class
   theme: {
     extend: {
       colors: {
         brand: {
-          50: "#181818", // Deep black
-          100: "#222222", // Slightly lighter than black
-          200: "#242424", // Soft dark tone
-          300: "#292929", // Main background or primary color
-          400: "#333333", // Slightly lighter background
-          500: "#444444", // UI accents
-          600: "#555555", // Hover highlights
-          700: "#666666", // Muted text or borders
-          800: "#999999", // Lighter text color
-          900: "#AAAAAA"  // Light
+          50: "var(--color-brand-50)",
+          100: "var(--color-brand-100)",
+          200: "var(--color-brand-200)",
+          300: "var(--color-brand-300)",
+          400: "var(--color-brand-400)",
+          500: "var(--color-brand-500)",
+          600: "var(--color-brand-600)",
+          700: "var(--color-brand-700)",
+          800: "var(--color-brand-800)",
+          900: "var(--color-brand-900)",
         },
+        white: "var(--color-white)",
       },
     },
   },
