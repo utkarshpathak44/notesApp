@@ -1,102 +1,106 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
-import { useNetwork } from "../CustomHooks/useNetwork";
+import { useNetwork } from "../customHooks/useNetwork";
 import { useData } from "../contexts/DataContext";
 import { NoteInterface, noteResponseData } from "../interfaces/ApiInterfaces";
+const getSearchParams = ({
+  folderId,
+  more,
+  page,
+}: {
+  page: number;
+  more?: string;
+  folderId?: string;
+}) => {
+  const params = new URLSearchParams({
+    page: page.toString(),
+    limit: "10",
+  });
 
+  if (more === "favorites") {
+    params.set("favorite", "true");
+  } else if (more === "archived") {
+    params.set("archived", "true");
+  } else if (more === "trash") {
+    params.set("deleted", "true");
+  } else if (folderId && folderId !== "undefined") {
+    params.set("deleted", "false");
+    params.set("archived", "false");
+    params.set("favorite", "false");
+    params.set("folderId", folderId);
+  }
+
+  return params;
+};
 const FolderView = () => {
   const { folderId, noteId, more } = useParams();
-  // const location = useLocation();
-  const { value,currentFolder } = useData();
-
+  const { currentFolder } = useData();
+  const [totalNotes, setTotalNotes] = useState<number>(0);
   const [page, setPage] = useState(1);
-  const [notes, setNotes] = useState<NoteInterface[]|[]>([]);
+  const [notes, setNotes] = useState<NoteInterface[]>([]);
+
   const {
-    data: folderContents,
+    // data: folderContents,
     loading: folderLoading,
-    // error: folderError,
     fetchData: getFolderContents,
   } = useNetwork<noteResponseData>();
 
   useEffect(() => {
-    setPage(1);
-    const params = new URLSearchParams({
-      // folderId: folderId === "undefined" ? "" : folderId || "",
-      archived: "",
-      favorite: "",
-      deleted: "",
-      page: "1",
-      limit: "10",
-      //only fetch the first page/first 10 notes when the page changes
-    });
+    if (!folderId || folderId === "undefined") return;
 
-    if (more === "favorites") {
-      params.set("favorite", "true");
-    } else if (more === "archived") {
-      params.set("archived", "true");
-    } else if (more === "trash") {
-      params.set("deleted", "true");
-    } else if (folderId) {
-      params.set("folderId", folderId || "");
-    }
-    if (folderId == "undefined") return;
-
-    getFolderContents(`/notes?${params.toString()}`, "GET", {});
-
-    setNotes([]); //clear so taht previoys notes are emptied
-  }, [folderId, more,value]);
-  // }, [folderId, location.pathname]);
-
-  // Fetch more notes when page changes
-  useEffect(() => {
-    if (page === 1) return;
-
-    const params = new URLSearchParams({
-      // folderId: folderId === "undefined" ? "" : folderId || "",
-      archived: "false",
-      favorite: "false",
-      deleted: "false",
-      page: page.toString(),
-      limit: "10",
-      //only fetch the first page/first 10 notes when the page changes
-    });
-
-    if (more === "favorites") {
-      params.set("favorite", "true");
-    } else if (more === "archived") {
-      params.set("archived", "true");
-    } else if (more === "trash") {
-      params.set("deleted", "true");
-    } else if (folderId) {
-      params.set("folderId", folderId || "");
-    }
-
-    getFolderContents(`/notes?${params.toString()}`, "GET", {});
-  }, [page]);
-
-  // Append new notes when folderContents updates
-  useEffect(() => {
-    if (folderContents?.notes?.length) {
-      setNotes((prevNotes) =>
-        page === 1
-          ? folderContents.notes
-          : [...prevNotes, ...folderContents.notes]
+    const fetchNotes = async () => {
+      const params = getSearchParams({ page, more, folderId });
+      const response = await getFolderContents(
+        `/notes?${params.toString()}`,
+        "GET",
+        {}
       );
-    }
-  }, [folderContents]);
+
+      if (page === 1) {
+        setNotes(response?.notes || []);
+      } else {
+        setNotes((prev) => [...prev, ...(response?.notes || [])]);
+      }
+
+      setTotalNotes(response?.total || 0);
+    };
+
+    fetchNotes();
+  }, [folderId, getFolderContents, more, page]);
+
+  const loadFolderContents = useCallback(async () => {
+    setPage((prev) => prev + 1);
+    const params = getSearchParams({
+      page: page + 1,
+      folderId,
+      more,
+    });
+    const response = await getFolderContents(
+      `/notes?${params.toString()}`,
+      "GET",
+      {}
+    );
+
+    setNotes((prev) => [...prev, ...(response?.notes || [])]);
+  }, [folderId, getFolderContents, more, page]);
+
+  // useEffect(() => {
+  //   setPage(1);
+  //   setNotes([]);
+  // }, [folderId, more]);
+
+  const title = useMemo(() => {
+    if (folderLoading) return "Loading...";
+    if (more === "favorites") return "Favorite Notes";
+    if (more === "archived") return "Archived Notes";
+    if (more === "trash") return "Trashed Notes";
+    return currentFolder || "Recent Files";
+  }, [currentFolder, folderLoading, more]);
 
   return (
     <div className="flex flex-col bg-brand-100 w-150 gap-8 py-15">
       <h2 className="text-2xl px-4">
-        {folderLoading
-          ? "Loading..."
-          : more === "favorites"
-          ? "Favorite Notes"
-          : more === "archived"
-          ? "Archived Notes"
-          : more === "trash"
-          ? "Trashed Notes"
-          : currentFolder|| "Recent Files"}
+        {title} {totalNotes}
       </h2>
 
       <div className="flex flex-col gap-4 overflow-y-scroll px-4">
@@ -118,7 +122,7 @@ const FolderView = () => {
                 </div>
               </div>
             ))
-          : notes.map((data:NoteInterface) => (
+          : notes.map((data: NoteInterface) => (
               <NavLink
                 key={data.id}
                 to={`${
@@ -145,10 +149,10 @@ const FolderView = () => {
               </NavLink>
             ))}
 
-        {page * 10 <= (folderContents?.total ?? 0) && (
+        {totalNotes > notes.length && (
           <button
             className="p-2 bg-brand-300 text-white rounded cursor-pointer hover:bg-brand-400"
-            onClick={() => setPage((prev) => prev + 1)}
+            onClick={loadFolderContents}
           >
             Load More
           </button>

@@ -51,8 +51,8 @@ export interface NotesResponse {
 export interface FileAttributesDropDownProps {
   noteId: string;
   noteData: NoteDataInterface;
+  sendPatchRequest:() => Promise<void>
+  sendDeleteRequest:() => Promise<void>
   setNoteData: React.Dispatch<React.SetStateAction<NoteDataInterface>>;
-  sendNote: (id: string, action: string, data: object) => void;
-  setAndNotifyData: () => void;
   setIsDeleted: (d:boolean) => void;
 }

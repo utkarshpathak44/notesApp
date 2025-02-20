@@ -1,11 +1,6 @@
-import { useState } from "react";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import {
-  FoldersResponseInterface,
-  NoteDataInterface,
-  NoteInterface,
-  noteResponseData,
-} from "../interfaces/ApiInterfaces";
+import { useCallback, useState } from "react";
+
 
 interface NetworkState<T> {
   data?: T;
@@ -13,22 +8,22 @@ interface NetworkState<T> {
   error: AxiosError | null;
 }
 
+const AxiosApi = axios.create({
+  baseURL: "https://nowted-server.remotestate.com",
+});
 export const useNetwork = <
-  T = NoteDataInterface | FoldersResponseInterface | NoteInterface[] |{id:string}
+  T = unknown
 >() => {
-  const AxiosApi = axios.create({
-    baseURL: "https://nowted-server.remotestate.com",
-  });
   const [state, setState] = useState<NetworkState<T>>({
     data: undefined,
     loading: false,
     error: null,
   });
 
-  const fetchData = async (
+  const fetchData = useCallback(async <P = unknown,>(
     url: string,
     method: AxiosRequestConfig["method"],
-    data?: NoteDataInterface | FoldersResponseInterface | noteResponseData | {} |number
+    data?:P
   ): Promise<T | undefined> => {  // Ensure return type
     setState((prev) => ({ ...prev, loading: true, error: null }));
     try {
@@ -41,7 +36,8 @@ export const useNetwork = <
       setState((prev) => ({ ...prev, loading: false, error: axiosError }));
       return undefined;  // Explicitly return undefined in case of failure
     }
-  };
+  },[]);
+
 
   return { ...state, fetchData };
 };

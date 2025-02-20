@@ -6,11 +6,10 @@ import { useData } from "../../contexts/DataContext";
 import { FileAttributesDropDownProps } from "../../interfaces/ApiInterfaces";
 
 const FileAttributesDropDown = ({
-  noteId,
   noteData,
+  sendPatchRequest,
   setNoteData,
-  sendNote,
-  setAndNotifyData,
+  sendDeleteRequest,
   setIsDeleted,
 }:FileAttributesDropDownProps) => {
   const {toggle}=useData()
@@ -23,7 +22,7 @@ const FileAttributesDropDown = ({
             ...prev,
             isFavorite: !prev.isFavorite,
           }));
-          setAndNotifyData();
+          sendPatchRequest();
         }}
       >
         <img src={favouritesIcon} alt="" className="w-6 h-6 " />
@@ -40,7 +39,7 @@ const FileAttributesDropDown = ({
             ...prev,
             isArchived: !prev.isArchived,
           }));
-          setAndNotifyData();
+          sendPatchRequest();
         }}
       >
         <img src={archivedIcon} alt="" className="w-6 h-6" />
@@ -50,7 +49,7 @@ const FileAttributesDropDown = ({
       <div
         className="flex h-15 flex-row gap-4 items-center px-8 hover:bg-amber-700 cursor-pointer"
         onClick={() => {
-          sendNote(`/notes/${noteId}`, "DELETE", {});
+          sendDeleteRequest()
           setIsDeleted(true);
           toggle()
         }}
