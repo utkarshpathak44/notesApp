@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import { useNetwork } from "../../CustomHooks/useNetwork";
+import { useNetwork } from "../../customHooks/useNetwork";
 import { useToast } from "../../contexts/CustomToast";
 import { useData } from "../../contexts/DataContext";
 
@@ -39,11 +39,6 @@ const Folders = () => {
   const { fetchData: UpdateFolder } = useNetwork();
   // const { fetchData: DeleteFolder } = useNetwork();
 
-  // useEffect(()=>{
-  //   if(!foldersLoading)return;
-  //   setShimmerOnce(true)
-  // },[foldersLoading])
-
   const handleCreateFolder = async () => {
     await CreateFolder("/folders", "POST", { name: newFolder });
     await fetchFolders("/folders", "GET", {});
@@ -76,21 +71,19 @@ const Folders = () => {
   };
 
   useEffect(() => {
-    fetchFolders("/folders", "GET", {}).then(() => setShimmerOnce(false));
-  }, []);
+    fetchFolders("/folders", "GET", {}).then((foldersResponseData) => {
+      setShimmerOnce(false);
+      if (!foldersResponseData?.folders) return;
 
-  useEffect(() => {
-    if (!foldersResponseData?.folders) return;
-    
-    const selectedFolder = foldersResponseData.folders.find(
-      (folder) => folder.id === folderId
-    );
-  
-    if (selectedFolder) {
-      setCurrentFolder(selectedFolder.name);
-    }
-  }, [folderId, foldersResponseData]);
+      const selectedFolder = foldersResponseData.folders.find(
+        (folder) => folder.id === folderId
+      );
 
+      if (selectedFolder) {
+        setCurrentFolder(selectedFolder.name);
+      }
+    });
+  }, [fetchFolders, folderId, setCurrentFolder]);
 
   if (foldersError) return <div>Error loading folders.</div>;
 
@@ -182,7 +175,6 @@ const Folders = () => {
                       key={data.id}
                       to={`/folders/${data.id}`}
                       className=" w-60 h-full"
-                      // onClick={() => setCurrentFolder(data.name)}
                     >
                       {data.name.length > 28
                         ? data.name.slice(0, 28) + "..."
@@ -190,7 +182,6 @@ const Folders = () => {
                     </NavLink>
                     <img
                       src={folderId === data.id ? trashLight : trashIcon}
-                      //i want to store the current folder name in the setCurrent folder contaxt here
                       className="w-4 cursor-pointer"
                       alt=""
                       onClick={() => handleDeleteFolder(data.id)}

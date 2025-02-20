@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import noteIcon from "../../assets/note.svg";
-import noteDarkerIcon from "../../assets/noteDarker.svg";
-import { useNetwork } from "../../CustomHooks/useNetwork";
+import { useNetwork } from "../../customHooks/useNetwork";
 import { NavLink, useParams } from "react-router-dom";
 import RecentsShimmer from "./RecentsShimmer";
 import { useData } from "../../contexts/DataContext";
 import { NoteInterface, RecentsResponseData } from "../../interfaces/ApiInterfaces";
+
+import noteIcon from "../../assets/note.svg";
+import noteDarkerIcon from "../../assets/noteDarker.svg";
 
 const Recents = () => {
   const { noteId } = useParams();
@@ -20,8 +21,8 @@ const Recents = () => {
   } = useNetwork<RecentsResponseData>();
 
   useEffect(() => {
-    fetchRecents("/notes/recent", "GET", {}).then(() => setShimmerOnce(false));
-  }, [value]);
+    fetchRecents("/notes/recent", "GET").then(() => setShimmerOnce(false));
+  }, [fetchRecents, value]);
 
   if (recentsError) return <div>Error loading Recents.</div>;
 

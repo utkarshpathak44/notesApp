@@ -8,19 +8,17 @@ import logo from "../assets/logo.svg";
 import searchIcon from "../assets/search.svg";
 import closeIcon from "../assets/close.svg";
 import addIcon from "../assets/add.svg";
-import { useNetwork } from "../CustomHooks/useNetwork";
+import { useNetwork } from "../customHooks/useNetwork";
 import { NoteInterface, noteResponseData } from "../interfaces/ApiInterfaces";
 
 
 const SideBar = () => {
-  // const [page, setPage] = useState(1);
-  // const [limit, setLimit] = useState(1);
+
   const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
+  // const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
 
   const [search, setSearch] = useState(false);
   const navigate = useNavigate();
-  // const [EnterNewNode, setEnterNewNode] = useState(false);
   const { folderId } = useParams();
 
   const {
@@ -32,19 +30,14 @@ const SideBar = () => {
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      setDebouncedSearchQuery(searchQuery);
+      if (searchQuery) {
+        fetchNote(`notes?page=1&limit=100&search=${searchQuery}`, "GET", {});
+      }
     }, 1000);
   
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [searchQuery]); 
+    return () => clearTimeout(handler);
+  }, [searchQuery, fetchNote]);
   
-  useEffect(() => {
-    // if (!debouncedSearchQuery) return; 
-    fetchNote(`notes?page=1&limit=100&search=${debouncedSearchQuery}`, "GET", {});
-    console.log(searchResponseData);
-  }, [debouncedSearchQuery]);
 
   return (
     <aside className="flex flex-col h-full w-135 bg-brand-50  gap-4">

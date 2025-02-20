@@ -4,16 +4,18 @@ const AutoSaveNotifier = ({ showSaved }: { showSaved: boolean }) => {
   const [showing, setShowing] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowing(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [showing]);
-
-  useEffect(() => {
-    console.log("showSaved changed");
-    setShowing(true);
+    if (showSaved) {
+      setShowing(true);
+      console.log("showSaved changed");
+  
+      const timer = setTimeout(() => {
+        setShowing(false);
+      }, 500);
+  
+      return () => clearTimeout(timer);
+    }
   }, [showSaved]);
+  
 
   return (
     <div className="text-brand-400 font-bold text-xl">

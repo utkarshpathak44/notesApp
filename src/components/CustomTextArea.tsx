@@ -1,64 +1,70 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { NoteDataInterface } from "../interfaces/ApiInterfaces";
 
 interface CustomTextAreaProps {
   noteData: NoteDataInterface;
-  setAndNotifyData: () => void;
-  setNoteData: React.Dispatch<React.SetStateAction<NoteDataInterface>>
-  hideAllOptions: ()=>void;
+  sendPatchRequest: () => void;
+  sendCreateRequest: () => void;
+  setNoteData: React.Dispatch<React.SetStateAction<NoteDataInterface>>;
+  hideAllOptions: () => void;
+  setShowSaved:React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CustomTextArea: React.FC<CustomTextAreaProps> = ({
   noteData,
-  setAndNotifyData,
+  sendPatchRequest,
+  sendCreateRequest,
   setNoteData,
   hideAllOptions,
+  setShowSaved,
 }) => {
-  const [debouncedContent, setDebouncedContent] = useState(noteData.content);
   const { noteId } = useParams();
+  const [debouncedContent, setDebouncedContent] = useState(noteData.content);
 
   const handleTextWrapper = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newContent = e.target.value;
     setNoteData((prev) => ({
       ...prev,
-      content: newContent,
+      content: e.target.value,
     }));
   };
 
-  // Update debouncedContent only when noteData.content changes
-  useEffect(() => {
-    setDebouncedContent(noteData.content);
-    console.log("setting debounced value")
-  }, [noteData.content]);
+  // save function
+  const autoSave = useCallback(() => {
+    if (noteId == "newnote") {
+      sendCreateRequest()
+    } else {
+      sendPatchRequest();
+    }
+    setShowSaved(p=>!p)
+  }, [noteId, sendCreateRequest, sendPatchRequest,setShowSaved]);
 
+  //debouncing
   useEffect(() => {
+    if (debouncedContent === noteData.content) return;
+
     const handler = setTimeout(() => {
-      
-      if (noteId !== "newnote" && debouncedContent == noteData.content) {
-        console.log(noteId);
-        console.log("autosaving");
-        setAndNotifyData();
-      }
+      setDebouncedContent(noteData.content);
+      console.log("Auto-saving...");
+      autoSave();
     }, 2000);
 
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [noteData.content, debouncedContent]);
+    return () => clearTimeout(handler);
+  }, [noteData.content, debouncedContent, autoSave]);
 
+  //adding  event listener
   useEffect(() => {
     const handleSaveShortcut = (event: KeyboardEvent) => {
       if (event.ctrlKey && event.key === "s") {
         event.preventDefault();
-        console.log("manually saving")
-        setAndNotifyData();
+        console.log("Manually saving...");
+        autoSave();
       }
     };
 
     document.addEventListener("keydown", handleSaveShortcut);
     return () => document.removeEventListener("keydown", handleSaveShortcut);
-  }, []);
+  }, [autoSave]);
 
   return (
     <textarea

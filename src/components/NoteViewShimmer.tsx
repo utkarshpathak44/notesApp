@@ -18,7 +18,7 @@ export const NoteViewShimmer = () => {
           <div className="h-5 w-30 bg-brand-100 animate-pulse-fast rounded"></div>
         </div>
       </div>
-      <div></div>
+      {/* <div></div> */}
       <div className="w-full h-full text-l resize-none bg-brand-50 rounded mb-5 flex flex-col gap-1">
         {[...Array(Math.floor(Math.random() * 3) + 3)].map((_, index) => (
           <div key={index} className="flex flex-col gap-1">
@@ -30,7 +30,6 @@ export const NoteViewShimmer = () => {
                 ></div>
               )
             )}
-
             <div
               className="h-5 bg-brand-100 animate-pulse-fast rounded-md"
               style={{
@@ -40,7 +39,6 @@ export const NoteViewShimmer = () => {
           </div>
         ))}
       </div>
-
       <div className=" h-10 w-80 bg-brand-100 animate-pulse-fast rounded-md"></div>
     </div>
   );
