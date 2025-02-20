@@ -22,12 +22,13 @@ const Container: React.FC = () => {
       <SideBar />
       <FolderView />
       <NoteView />
+      {/* a dark/ligh mode toggle on the top right */}
       <div className="absolute w-16 h-16 bg-brand-600 rounded-full -top-10 -right-10 flex items-center justify-center hover:scale-120 transition-transform duration-200 cursor-pointer hover:animate-pulse">
-  <div
-    className="w-12 h-12 bg-brand-900 rounded-full "
-    onClick={toggleTheme}
-  ></div>
-</div>
+        <div
+          className="w-12 h-12 bg-brand-900 rounded-full "
+          onClick={toggleTheme}
+        ></div>
+      </div>
     </div>
   );
 };

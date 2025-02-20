@@ -182,7 +182,9 @@ const Folders = () => {
                       key={data.id}
                       to={`/folders/${data.id}`}
                       className=" w-60 h-full"
-                      // onClick={() => setCurrentFolder(data.name)}
+                      //i want to store the current folder name in the setCurrent folder contaxt here
+                      //onClick={() => setCurrentFolder(data.name)}
+                      //addded this functionality to useEffect now, to deal with the empty folders
                     >
                       {data.name.length > 28
                         ? data.name.slice(0, 28) + "..."
@@ -190,7 +192,6 @@ const Folders = () => {
                     </NavLink>
                     <img
                       src={folderId === data.id ? trashLight : trashIcon}
-                      //i want to store the current folder name in the setCurrent folder contaxt here
                       className="w-4 cursor-pointer"
                       alt=""
                       onClick={() => handleDeleteFolder(data.id)}

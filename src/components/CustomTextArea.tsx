@@ -5,8 +5,8 @@ import { NoteDataInterface } from "../interfaces/ApiInterfaces";
 interface CustomTextAreaProps {
   noteData: NoteDataInterface;
   setAndNotifyData: () => void;
-  setNoteData: React.Dispatch<React.SetStateAction<NoteDataInterface>>
-  hideAllOptions: ()=>void;
+  setNoteData: React.Dispatch<React.SetStateAction<NoteDataInterface>>;
+  hideAllOptions: () => void;
 }
 
 const CustomTextArea: React.FC<CustomTextAreaProps> = ({
@@ -29,12 +29,11 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
   // Update debouncedContent only when noteData.content changes
   useEffect(() => {
     setDebouncedContent(noteData.content);
-    console.log("setting debounced value")
+    console.log("setting debounced value");
   }, [noteData.content]);
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      
       if (noteId !== "newnote" && debouncedContent == noteData.content) {
         console.log(noteId);
         console.log("autosaving");
@@ -51,7 +50,7 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
     const handleSaveShortcut = (event: KeyboardEvent) => {
       if (event.ctrlKey && event.key === "s") {
         event.preventDefault();
-        console.log("manually saving")
+        console.log("manually saving");
         setAndNotifyData();
       }
     };

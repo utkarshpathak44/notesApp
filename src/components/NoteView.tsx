@@ -11,10 +11,11 @@ import ChangeFolderDropDown from "./noteViewComponents/ChangeFolderDropDown";
 import Restore from "./Restore";
 import { useData } from "../contexts/DataContext";
 import AutoSaveNotifier from "./noteViewComponents/AutoSaveNotifier";
+import { NoteDataInterface, NoteInterface } from "../interfaces/ApiInterfaces";
+
 
 import calenderIcon from "../assets/calender.svg";
 import folderIcon from "../assets/otherFolder.svg";
-import { NoteDataInterface, NoteInterface } from "../interfaces/ApiInterfaces";
 
 const InitialData = {
   folderId: "",
@@ -27,17 +28,16 @@ const InitialData = {
 const NoteView = () => {
   const { toggle } = useData();
   const [noteData, setNoteData] = useState<NoteDataInterface>(InitialData);
-
   const showToast = useToast();
   const { folderId, noteId, more } = useParams();
   const navigate = useNavigate();
   const [noteOptions, setNoteOptions] = useState<boolean>(false);
   const [saveTrigger, setSaveTrigger] = useState<boolean>(false);
-  const [showFolderChange, setShowFolderChange] = useState<boolean>(false);
-  const [folderName, setFolderName] = useState<string>("");
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [showSaved, setShowSaved] = useState<boolean>(true);
   const isFirstRender = useRef(true);
+  const [folderName, setFolderName] = useState<string>("");
+  const [showFolderChange, setShowFolderChange] = useState<boolean>(false);
 
   const hideAllOptions = () => {
     setShowFolderChange(false);
@@ -50,7 +50,7 @@ const NoteView = () => {
     loading: loadingNote,
     error: noteError,
     fetchData: fetchNote,
-  } = useNetwork<{note:NoteInterface}>();
+  } = useNetwork<{ note: NoteInterface }>();
 
   // Save note data
   const {
@@ -78,12 +78,12 @@ const NoteView = () => {
     console.log("Fetching note with ID:", noteId);
     fetchNote(`/notes/${noteId}`, "GET", {});
     setNoteOptions(false);
+    setIsDeleted(false);
   }, [noteId]);
 
-  useEffect(() => {
-    setIsDeleted(false);
-    // setNoteData(InitialData)
-  }, [noteId]);
+  // useEffect(() => {
+  // setNoteData(InitialData)
+  // }, [noteId]);
 
   // Update state when noteData is received
   useEffect(() => {
@@ -120,6 +120,7 @@ const NoteView = () => {
     setSaveTrigger((prev) => !prev); // Toggle state to trigger useEffect
   };
 
+  //creating newnote and sending the patch request from here
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
@@ -129,7 +130,7 @@ const NoteView = () => {
     const saveData = async () => {
       setShowSaved((p) => !p);
 
-      const updatedNote:NoteDataInterface = {
+      const updatedNote: NoteDataInterface = {
         folderId: noteData.folderId || folderId,
         title: noteData.title,
         content: noteData.content,
@@ -148,12 +149,9 @@ const NoteView = () => {
 
       if (noteId === "newnote") {
         toggle(); //used to reload the recent and folderView component
-        showToast("Note Created")
+        showToast("Note Created");
         navigate(`/folders/${updatedNote.folderId}/notes/${sentdata?.id}`);
       } else if (more != undefined) {
-        //pass
-        // navigate(`/${more}/notes/${noteId}`);
-        // toggle();
       } else if (updatedNote.folderId !== folderId) {
         showToast("Note Created");
         navigate(`/folders/${updatedNote.folderId}/notes/${noteId}`);
@@ -169,19 +167,22 @@ const NoteView = () => {
     saveData();
   }, [saveTrigger]);
 
+  //if the trash folder is loaded, and a note is opened
   if (!loadingNote && more == "trash" && noteId !== undefined)
     return (
       <Restore
         RestoreNote={() => {
-          //this function restores the node
           sendNote(`/notes/${noteId}/restore`, "POST", {});
           setIsDeleted(false);
           showToast("Note Restored");
+          toggle()
+          navigate(`/trash`)
         }}
       />
     );
 
-  if (noteId === undefined||noteResponseData?.note?.deletedAt!=null)
+  //if the note is not opened
+    if (noteId === undefined || noteResponseData?.note?.deletedAt != null)
     return (
       <div className="flex flex-col bg-brand-50 w-full h-full p-10 py-15 gap-8">
         <NoOpen />
@@ -197,6 +198,7 @@ const NoteView = () => {
         sendNote(`/notes/${noteId}/restore`, "POST", {});
         setIsDeleted(false);
         showToast("Note Restored");
+        toggle();
       }}
     />
   ) : (

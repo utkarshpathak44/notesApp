@@ -1,4 +1,10 @@
-import { createContext, useEffect, useContext, useState, useLayoutEffect } from "react";
+import {
+  createContext,
+  useEffect,
+  useContext,
+  useState,
+  useLayoutEffect,
+} from "react";
 
 const AuthContext = createContext(undefined);
 
@@ -10,25 +16,30 @@ export const useAuth = () => {
   return authContext;
 };
 
-const AuthProvider=({children})=>{
-    const [token,setToken]=useState("")
+const AuthProvider = ({ children }) => {
+  const [token, setToken] = useState("");
 
-    useEffect(()=>{
-        //fetch the access token from here
-        const fetchMe=async()=>{
+  useEffect(() => {
+    //fetch the access token from here
+    const fetchMe = async () => {};
+    fetchMe();
+  }, []);
 
-        }
-        fetchMe()
-    },[])
+  useLayoutEffect(() => {
+    //create an interceptor for the api here, whenever any request is made, inject the token into it
+    //using the useLayoutEffect hook to block all the rendering
+    //we can check for the expiration of the token right here
+  }, [token]);
 
-    useLayoutEffect(()=>{
-        //create an interceptor for the api here, whenever any request is made, inject the token into it
-        //using the useLayoutEffect hook to block all the rendering
+  useLayoutEffect(() => {
+    //updating the token if the token is null/ expired
+  });
 
-        //we can check for the expiration of the token right here
-    },[token])
+  return (
+    <AuthContext.Provider value={{ token, setToken }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
-    useLayoutEffect(()=>{
-        //updating the token if the token is null
-    })
-}
+export default AuthProvider;
