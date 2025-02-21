@@ -27,7 +27,8 @@
 - [x] **Search Notes with debouncing** 
 - [x] **Impletement tailwind the proper way** High priority
 - [x] **When a new note is created, automatically redirect to it's link**
-- [ ] **folder name** if the folder dosent have any notes, then we cant find the name of the folder to display on the top of the component
+- [x] **Fixed: Bug: folder name** if the folder dosent have any notes, then we cant find the name of the folder to display on the top of the component
+- [x] **No typescript errors**
 - [ ] **Open only the certain folder when / is opened** Easy, just hard code the note
 - [ ] **Open only the certain folder when / is opened** will do later
 - [ ] **Responsive Design** Yet to be Done
