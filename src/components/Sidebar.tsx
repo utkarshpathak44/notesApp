@@ -68,7 +68,7 @@ const SideBar = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 type="text"
-                placeholder="Search note"
+                placeholder="Search something"
                 className="border-none focus:ring-0 outline-none w-full"
               />
               <img

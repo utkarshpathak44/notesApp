@@ -142,6 +142,7 @@ const NoteView = () => {
         setIsDeleted(false);
         showToast("Note Restored");
         toggle();
+        // navigate()
       }}
     />
   ) : (
