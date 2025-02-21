@@ -36,6 +36,7 @@
 --color-brand-800: oklch(31.7% 0 0);
 --color-brand-900: oklch(26.2% 0 0);
 --color-white:oklch(10.2% 0 0);
+--color-amber-800: rgb(120, 20, 200)
 }
 
 @layer utilities {

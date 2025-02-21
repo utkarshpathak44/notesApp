@@ -33,6 +33,8 @@ const getSearchParams = ({
   return params;
 };
 const FolderView = () => {
+  const { value } = useData();
+
   const { folderId, noteId, more } = useParams();
   const { currentFolder } = useData();
   const [totalNotes, setTotalNotes] = useState<number>(0);
@@ -46,7 +48,8 @@ const FolderView = () => {
   } = useNetwork<noteResponseData>();
 
   useEffect(() => {
-    if (!folderId || folderId === "undefined") return;
+    // if (!folderId || folderId === "undefined") return;
+    
 
     const fetchNotes = async () => {
       const params = getSearchParams({ page, more, folderId });
@@ -64,9 +67,10 @@ const FolderView = () => {
 
       setTotalNotes(response?.total || 0);
     };
+    
 
     fetchNotes();
-  }, [folderId, getFolderContents, more, page]);
+  }, [folderId, getFolderContents, more, page,value]);
 
   const loadFolderContents = useCallback(async () => {
     setPage((prev) => prev + 1);

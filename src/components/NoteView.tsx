@@ -61,6 +61,7 @@ const NoteView = () => {
   );
 
   useEffect(() => {
+    setIsDeleted(false)
     if (!noteId) return;
 
     if (noteId === "newnote") {
