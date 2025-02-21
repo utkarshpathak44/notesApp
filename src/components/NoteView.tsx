@@ -115,7 +115,8 @@ const NoteView = () => {
     setIsDeleted(true);
     showToast("Note Restored Deleted");
     toggle();
-  },[noteId, sendNote, showToast, toggle])
+    navigate(`/trash`)
+  },[navigate, noteId, sendNote, showToast, toggle])
 
   if (!loadingNote && more === "trash" && noteId !== undefined) {
     return (
