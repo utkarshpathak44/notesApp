@@ -9,7 +9,7 @@ import currentFolderIcon from "../../assets/currentFolder.svg";
 import otherFolderIcon from "../../assets/otherFolder.svg";
 import trashIcon from "../../assets/trashLp.svg";
 import restore from "../../assets/restore.svg";
-import trashLight from "../../assets/Trash.svg";
+import trashLight from "../../assets/trash.svg";
 
 import RecentsShimmer from "./RecentsShimmer";
 

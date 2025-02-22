@@ -1,6 +1,6 @@
-import trashIcon from "../../assets/Trash.svg";
-import archivedIcon from "../../assets/Archived.svg";
-import favouritesIcon from "../../assets/Favourites.svg";
+import trashIcon from "../../assets/trash.svg";
+import archivedIcon from "../../assets/archived.svg";
+import favouritesIcon from "../../assets/favourites.svg";
 import { useData } from "../../contexts/DataContext";
 
 import { FileAttributesDropDownProps } from "../../interfaces/ApiInterfaces";
