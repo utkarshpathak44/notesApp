@@ -28,7 +28,7 @@ export const NoteViewShimmer = () => {
                   key={subIndex}
                   className="h-5 w-full bg-brand-100 rounded animate-pulse-fast"
                 ></div>
-              )
+              ),
             )}
             <div
               className="h-5 bg-brand-100 animate-pulse-fast rounded-md"

@@ -11,8 +11,8 @@ const FileAttributesDropDown = ({
   setNoteData,
   sendDeleteRequest,
   setIsDeleted,
-}:FileAttributesDropDownProps) => {
-  const {toggle}=useData()
+}: FileAttributesDropDownProps) => {
+  const { toggle } = useData();
   return (
     <div className="absolute top-0 right-0 px-0 py-4 bg-brand-200 w-80 text-xl rounded-xl flex-col gap-2 ">
       <div
@@ -27,9 +27,7 @@ const FileAttributesDropDown = ({
       >
         <img src={favouritesIcon} alt="" className="w-6 h-6 " />
         <div>
-          {noteData.isFavorite
-            ? "Remove from Favourites"
-            : "Add to favourites"}
+          {noteData.isFavorite ? "Remove from Favourites" : "Add to favourites"}
         </div>
       </div>
       <div
@@ -49,9 +47,9 @@ const FileAttributesDropDown = ({
       <div
         className="flex h-15 flex-row gap-4 items-center px-8 hover:bg-amber-700 cursor-pointer"
         onClick={() => {
-          sendDeleteRequest()
+          sendDeleteRequest();
           setIsDeleted(true);
-          toggle()
+          toggle();
         }}
       >
         <img src={trashIcon} alt="" className="w-6 h-6" />

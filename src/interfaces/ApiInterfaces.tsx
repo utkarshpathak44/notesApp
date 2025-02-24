@@ -8,12 +8,12 @@ export interface Folder {
 
 export interface FoldersResponseInterface {
   folders: Folder[];
-  length:number|undefined
+  length: number | undefined;
 }
 
 export interface noteResponseData {
   notes: NoteInterface[];
-  total:number
+  total: number;
 }
 
 export interface RecentsResponseData {
@@ -21,19 +21,18 @@ export interface RecentsResponseData {
 }
 
 export interface NoteDataInterface {
-  folderId: string|undefined;
+  folderId: string | undefined;
   title: string;
   content: string;
   isFavorite: boolean;
   isArchived: boolean;
 }
 
-
 export interface NoteInterface {
   id: string;
   folderId: string;
   title: string;
-  content: string
+  content: string;
   isFavorite: boolean;
   isArchived: boolean;
   createdAt: string;
@@ -47,12 +46,11 @@ export interface NotesResponse {
   notes: NoteInterface[];
 }
 
-
 export interface FileAttributesDropDownProps {
   noteId: string;
   noteData: NoteDataInterface;
-  sendPatchRequest:() => Promise<void>
-  sendDeleteRequest:() => Promise<void>
+  sendPatchRequest: () => Promise<void>;
+  sendDeleteRequest: () => Promise<void>;
   setNoteData: React.Dispatch<React.SetStateAction<NoteDataInterface>>;
-  setIsDeleted: (d:boolean) => void;
+  setIsDeleted: (d: boolean) => void;
 }

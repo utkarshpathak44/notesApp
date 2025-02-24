@@ -76,7 +76,7 @@ const Folders = () => {
       if (!foldersResponseData?.folders) return;
 
       const selectedFolder = foldersResponseData.folders.find(
-        (folder) => folder.id === folderId
+        (folder) => folder.id === folderId,
       );
 
       if (selectedFolder) {

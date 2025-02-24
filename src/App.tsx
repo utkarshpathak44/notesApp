@@ -1,8 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastProvider } from "./contexts/CustomToast";
 import Container from "./components/Container";
 import { PageNotFound } from "./components/PageNotFound";

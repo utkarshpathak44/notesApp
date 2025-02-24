@@ -19,13 +19,14 @@ const Container: React.FC = () => {
           transform: `scale(${scale})`,
         }}
       >
-        <div className="pointer-events-auto w-12 h-12 bg-white rounded-full z-100 relative cursor-pointer hover:animate-pulse"
-        style={{
-          width: 48, // fixed size
-          height: 48,
-          transform: `scale(${1 / scale})`,
-        }}
-        onClick={() => setScale((prev) => (prev === 1 ? 100 : 1))}
+        <div
+          className="pointer-events-auto w-12 h-12 bg-white rounded-full z-100 relative cursor-pointer hover:animate-pulse"
+          style={{
+            width: 48, // fixed size
+            height: 48,
+            transform: `scale(${1 / scale})`,
+          }}
+          onClick={() => setScale((prev) => (prev === 1 ? 100 : 1))}
         ></div>
       </div>
     </div>

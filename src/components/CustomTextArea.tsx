@@ -8,7 +8,7 @@ interface CustomTextAreaProps {
   sendCreateRequest: () => void;
   setNoteData: React.Dispatch<React.SetStateAction<NoteDataInterface>>;
   hideAllOptions: () => void;
-  setShowSaved:React.Dispatch<React.SetStateAction<boolean>>;
+  setShowSaved: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CustomTextArea: React.FC<CustomTextAreaProps> = ({
@@ -32,12 +32,12 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
   // save function
   const autoSave = useCallback(() => {
     if (noteId == "newnote") {
-      sendCreateRequest()
+      sendCreateRequest();
     } else {
       sendPatchRequest();
     }
-    setShowSaved(p=>!p)
-  }, [noteId, sendCreateRequest, sendPatchRequest,setShowSaved]);
+    setShowSaved((p) => !p);
+  }, [noteId, sendCreateRequest, sendPatchRequest, setShowSaved]);
 
   //debouncing
   useEffect(() => {
