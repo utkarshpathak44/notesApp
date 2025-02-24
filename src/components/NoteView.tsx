@@ -57,11 +57,11 @@ const NoteView = () => {
       isFavorite: noteData.isFavorite,
       isArchived: noteData.isArchived,
     }),
-    [noteData, folderId]
+    [noteData, folderId],
   );
 
   useEffect(() => {
-    setIsDeleted(false)
+    setIsDeleted(false);
     if (!noteId) return;
 
     if (noteId === "newnote") {
@@ -83,7 +83,7 @@ const NoteView = () => {
     });
 
     hideAllOptions();
-  }, [noteId,fetchNote]);
+  }, [noteId, fetchNote]);
 
   const sendPatchRequest = useCallback(async () => {
     if (!noteId || noteId === "newnote") return;
@@ -94,7 +94,7 @@ const NoteView = () => {
     if (noteId !== "newnote") return;
     const response = await sendNote(`/notes`, "POST", updatedNote);
     if (response?.id) {
-      console.log(response.id)
+      console.log(response.id);
       toggle();
       showToast("Note Created");
       navigate(`/folders/${updatedNote.folderId}/notes/${response.id}`);
@@ -109,21 +109,17 @@ const NoteView = () => {
     toggle();
   }, [noteId, sendNote, showToast, toggle]);
 
-  const sendRestoreDeletedRequest=useCallback(async()=>{
+  const sendRestoreDeletedRequest = useCallback(async () => {
     if (!noteId) return;
     await sendNote(`/notes/${noteId}/restore`, "POST", null);
     setIsDeleted(true);
     showToast("Note Restored Deleted");
     toggle();
-    navigate(`/trash`)
-  },[navigate, noteId, sendNote, showToast, toggle])
+    navigate(`/trash`);
+  }, [navigate, noteId, sendNote, showToast, toggle]);
 
   if (!loadingNote && more === "trash" && noteId !== undefined) {
-    return (
-      <Restore
-        RestoreNote={sendRestoreDeletedRequest}
-      />
-    );
+    return <Restore RestoreNote={sendRestoreDeletedRequest} />;
   }
 
   if (noteId === undefined || noteResponseData?.note?.deletedAt) {
@@ -187,7 +183,7 @@ const NoteView = () => {
           <div className="text-brand-800">Date</div>
           <time className="ml-10">
             {new Date(
-              noteResponseData?.note?.createdAt || new Date()
+              noteResponseData?.note?.createdAt || new Date(),
             ).toLocaleDateString("en-GB")}
           </time>
         </div>
@@ -211,7 +207,7 @@ const NoteView = () => {
         </div>
       </div>
       <CustomTextArea
-      hideAllOptions={hideAllOptions}
+        hideAllOptions={hideAllOptions}
         noteData={noteData}
         setNoteData={setNoteData}
         sendPatchRequest={sendPatchRequest}

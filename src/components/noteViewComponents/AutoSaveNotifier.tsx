@@ -7,15 +7,14 @@ const AutoSaveNotifier = ({ showSaved }: { showSaved: boolean }) => {
     if (showSaved) {
       setShowing(true);
       console.log("showSaved changed");
-  
+
       const timer = setTimeout(() => {
         setShowing(false);
       }, 500);
-  
+
       return () => clearTimeout(timer);
     }
   }, [showSaved]);
-  
 
   return (
     <div className="text-brand-400 font-bold text-xl">

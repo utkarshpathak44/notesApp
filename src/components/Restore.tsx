@@ -15,7 +15,7 @@ const Restore = ({ RestoreNote }: { RestoreNote: () => void }) => {
         className=" px-8 py-2 text-xl text-white bg-amber-800 rounded xl cursor-pointer hover:bg-amber-700 transition-all"
         onClick={RestoreNote}
       >
-        Restore 
+        Restore
       </button>
     </div>
   );

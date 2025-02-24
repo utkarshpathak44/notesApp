@@ -49,14 +49,13 @@ const FolderView = () => {
 
   useEffect(() => {
     // if (!folderId || folderId === "undefined") return;
-    
 
     const fetchNotes = async () => {
       const params = getSearchParams({ page, more, folderId });
       const response = await getFolderContents(
         `/notes?${params.toString()}`,
         "GET",
-        {}
+        {},
       );
 
       if (page === 1) {
@@ -67,10 +66,9 @@ const FolderView = () => {
 
       setTotalNotes(response?.total || 0);
     };
-    
 
     fetchNotes();
-  }, [folderId, getFolderContents, more, page,value]);
+  }, [folderId, getFolderContents, more, page, value]);
 
   const loadFolderContents = useCallback(async () => {
     setPage((prev) => prev + 1);
@@ -82,7 +80,7 @@ const FolderView = () => {
     const response = await getFolderContents(
       `/notes?${params.toString()}`,
       "GET",
-      {}
+      {},
     );
 
     setNotes((prev) => [...prev, ...(response?.notes || [])]);

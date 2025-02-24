@@ -11,9 +11,7 @@ import addIcon from "../assets/add.svg";
 import { useNetwork } from "../customHooks/useNetwork";
 import { NoteInterface, noteResponseData } from "../interfaces/ApiInterfaces";
 
-
 const SideBar = () => {
-
   const [searchQuery, setSearchQuery] = useState("");
   // const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
 
@@ -34,10 +32,9 @@ const SideBar = () => {
         fetchNote(`notes?page=1&limit=100&search=${searchQuery}`, "GET", {});
       }
     }, 1000);
-  
+
     return () => clearTimeout(handler);
   }, [searchQuery, fetchNote]);
-  
 
   return (
     <aside className="flex flex-col h-full w-135 bg-brand-50  gap-4">
@@ -78,7 +75,7 @@ const SideBar = () => {
                 onClick={() => setSearchQuery("")}
               />
               {!loadingSearch &&
-              (searchResponseData?.notes?? []).length > 0 &&
+              (searchResponseData?.notes ?? []).length > 0 &&
               searchQuery != "" ? (
                 <div className="absolute left-0 top-full pt-2 w-full h-200 bg-brand-100 text-white shadow-lg max-h-60 overflow-y-scroll z-10">
                   {searchResponseData?.notes.map((note: NoteInterface) => (

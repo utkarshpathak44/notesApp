@@ -3,7 +3,10 @@ import { useNetwork } from "../../customHooks/useNetwork";
 import { NavLink, useParams } from "react-router-dom";
 import RecentsShimmer from "./RecentsShimmer";
 import { useData } from "../../contexts/DataContext";
-import { NoteInterface, RecentsResponseData } from "../../interfaces/ApiInterfaces";
+import {
+  NoteInterface,
+  RecentsResponseData,
+} from "../../interfaces/ApiInterfaces";
 
 import noteIcon from "../../assets/note.svg";
 import noteDarkerIcon from "../../assets/noteDarker.svg";

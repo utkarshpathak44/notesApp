@@ -23,20 +23,19 @@
   --color-white:oklch(89.8% 0 0);
 */
 
-
-/* light mode */
+  /* light mode */
   --color-brand-50: oklch(79.1% 0 0);
---color-brand-100: oklch(74.8% 0 0);
---color-brand-200: oklch(73.97% 0 0);
---color-brand-300: oklch(71.91% 0 0);
---color-brand-400: oklch(67.89% 0 0);
---color-brand-500: oklch(61.33% 0 0);
---color-brand-600: oklch(55.05% 0 0);
---color-brand-700: oklch(48.97% 0 0);
---color-brand-800: oklch(31.7% 0 0);
---color-brand-900: oklch(26.2% 0 0);
---color-white:oklch(10.2% 0 0);
---color-amber-800: rgb(120, 20, 200)
+  --color-brand-100: oklch(74.8% 0 0);
+  --color-brand-200: oklch(73.97% 0 0);
+  --color-brand-300: oklch(71.91% 0 0);
+  --color-brand-400: oklch(67.89% 0 0);
+  --color-brand-500: oklch(61.33% 0 0);
+  --color-brand-600: oklch(55.05% 0 0);
+  --color-brand-700: oklch(48.97% 0 0);
+  --color-brand-800: oklch(31.7% 0 0);
+  --color-brand-900: oklch(26.2% 0 0);
+  --color-white: oklch(10.2% 0 0);
+  --color-amber-800: rgb(120, 20, 200);
 }
 
 @layer utilities {
